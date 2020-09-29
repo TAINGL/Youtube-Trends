@@ -62,7 +62,7 @@ def get_ID_query(service, query):
     save_to_json('../data/response_from_query.json', response)
     return response
 
-def get_videoList(service, channelIDs):
+def get_videoList(service, ids):
     """
     Search results are constrained to a maximum of 500 videos 
     if your request specifies a value for the channelId parameter
@@ -70,7 +70,7 @@ def get_videoList(service, channelIDs):
     
     request = service.search().list(
         part="snippet",
-        channelId= channelIDs, #"-biOGdYiF-I"
+        channelId= ids, #"-biOGdYiF-I"
         maxResults = 50
     )
     response = request.execute()
@@ -78,6 +78,7 @@ def get_videoList(service, channelIDs):
     pp.pprint(response)
 
     save_to_json('../data/videoList_of_channelID.json', response)
+    return response
 
 def get_video_data(service, videoId):
     """
@@ -93,6 +94,7 @@ def get_video_data(service, videoId):
     pp.pprint(response)
 
     save_to_json('../data/video_data.json', response)
+    return response
 
 def get_video_comments(service, videoId):
     """
@@ -108,6 +110,7 @@ def get_video_comments(service, videoId):
     pp.pprint(response)
 
     save_to_json('../data/video_comments.json', response)
+    return response
 
 def get_channel_info(service, channelId):
     """
@@ -123,6 +126,7 @@ def get_channel_info(service, channelId):
     pp.pprint(response)
 
     save_to_json('../data/channel_info.json', response)
+    return response
 
 def get_channel_playlist(service, channelId):
     """
@@ -138,6 +142,7 @@ def get_channel_playlist(service, channelId):
     pp.pprint(response)
 
     save_to_json('../data/channel_playlist.json', response)
+    return response
 
 def save_to_json(files_name, files):
     """
@@ -178,16 +183,20 @@ def get_video_info(channelIDs):
     videoIDs = []
     
     for i in channelIDs:
-        videoIDList = get_videoList(service, channelIDs= i)
+        videoIDList = get_videoList(service, ids= i)
         videoIDLists.append(videoIDList)
-        print(videoIDLists)
+        #print(videoIDLists)
 
     for item in videoIDLists:
-        for nbr in range(len(item['items'])-2): # because last video doesn't have "videoId"
-            videoID = item['items']['id'][nbr]['videoId']
+        for data in item['items']:
+            try:
+                videoID = data['id']['videoId']
+            except:
+                pass
             videoIDs.append(videoID)
+        print(videoIDs)
 
-    return videoIDs
+    return videoIDLists, videoIDs
 
 if __name__ == '__main__':
     # When running locally, disable OAuthlib's HTTPs verification. When
@@ -197,7 +206,12 @@ if __name__ == '__main__':
 
     #get_ID_query(service, query= "Machine Learnia")
     #get_videoList(service, 'UCmpptkXu8iIFe6kfDK5o7VQ')
+    #get_video_info(['UCmpptkXu8iIFe6kfDK5o7VQ'])
+    #get_video_data(service, 'EUD07IiviJg')
+    #get_video_comments(service, 'EUD07IiviJg')
+    #get_channel_info(service, 'UCmpptkXu8iIFe6kfDK5o7VQ')
+    #get_channel_playlist(service, 'UCmpptkXu8iIFe6kfDK5o7VQ')
 
     #profils, channelIDs = get_profil_Info(['Machine Learnia']) # , 'Science4All'
-    #get_video_info(channelIDs)
+    
 

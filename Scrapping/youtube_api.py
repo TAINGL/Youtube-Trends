@@ -272,7 +272,9 @@ def save_info(name_list,channelIDs):
         'comment':comments,
         }
 
-    d = save_to_json('../data/data_all_info.json', data)
+    save_to_json('../data/data_all_info.json', data)
+
+    return data
 
 if __name__ == '__main__':
     # When running locally, disable OAuthlib's HTTPs verification. When

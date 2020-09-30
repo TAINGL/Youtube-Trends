@@ -3,6 +3,7 @@ import pickle
 import json
 import pprint
 import requests
+import pandas as pd
 import google.oauth2.credentials
  
 from googleapiclient.discovery import build
@@ -62,7 +63,7 @@ def get_ID_query(service, query):
     save_to_json('../data/response_from_query.json', response)
     return response
 
-def get_videoList(service, ids):
+def get_videoList(service, channelId):
     """
     Search results are constrained to a maximum of 500 videos 
     if your request specifies a value for the channelId parameter
@@ -70,7 +71,7 @@ def get_videoList(service, ids):
     
     request = service.search().list(
         part="snippet",
-        channelId= ids, #"-biOGdYiF-I"
+        channelId= channelId, #"-biOGdYiF-I"
         maxResults = 50
     )
     response = request.execute()
@@ -86,7 +87,7 @@ def get_video_data(service, videoId):
     """
 
     request = service.videos().list(
-        part="statistics",
+        part="snippet, statistics, topicDetails",
         id= videoId #"-biOGdYiF-I"
     )
     response = request.execute()
@@ -99,11 +100,15 @@ def get_video_data(service, videoId):
 def get_video_comments(service, videoId):
     """
     Get a video’s comments
+
+    Note - maxResults: This parameter is not supported for use in conjunction with the id parameter. 
+    Acceptable values are 1 to 100, inclusive. The default value is 20.
     """
 
     request = service.commentThreads().list(
         part="snippet",
-        videoId= videoId #"-biOGdYiF-I"
+        videoId= videoId, #"-biOGdYiF-I"
+        maxResults = 50
     )
     response = request.execute()
 
@@ -131,17 +136,41 @@ def get_channel_info(service, channelId):
 def get_channel_playlist(service, channelId):
     """
     Get a channel’s playlist
+
+    The maxResults parameter specifies the maximum number of items that should be returned in the result set. 
+    Acceptable values are 0 to 50, inclusive. The default value is 5.
     """
 
     request = service.playlists().list(
         part="snippet",
-        channelId= channelId #"UC8CU5nVhCQIdAGrFFp4loOQ"
+        channelId= channelId, #"UC8CU5nVhCQIdAGrFFp4loOQ"
+        maxResults = 20
     )
     response = request.execute()
 
     pp.pprint(response)
 
     save_to_json('../data/channel_playlist.json', response)
+    return response
+
+def get_channel_playlist_items(service, playlistIds):
+    """
+    Get a channel’s playlist
+
+    The maxResults parameter specifies the maximum number of items that should be returned in the result set. 
+    Acceptable values are 0 to 50, inclusive. The default value is 5.
+    """
+
+    request = service.playlists().list(
+        part="snippet",
+        id= playlistIds, #"UC8CU5nVhCQIdAGrFFp4loOQ"
+        maxResults = 20
+    )
+    response = request.execute()
+
+    pp.pprint(response)
+
+    save_to_json('../data/channel_playlist_items.json', response)
     return response
 
 def save_to_json(files_name, files):
@@ -153,13 +182,17 @@ def save_to_json(files_name, files):
         print('Your files is saved!')
 
 
-def get_profil_Info(name_list):
+def get_profil_info(name_list):
     """
     Collect all channel ID and profil Youtuber name by query search
     """
     results = []
     profils = []
     channelIDs = []
+    channelinfos = []
+    playlistIds = []
+    channelplaylists = []
+    playlist_items = [] 
     
 
     for i in name_list:
@@ -173,17 +206,34 @@ def get_profil_Info(name_list):
         profils.append(profil)
         channelIDs.append(channelID)
 
+    for i in channelIDs:
+        channelinfo = get_channel_info(service, channelId= i)
+        channelplaylist = get_channel_playlist(service, channelId= i)
+        channelinfos.append(channelinfo)
+        channelplaylists.append(channelplaylist)
+
+    for item in channelplaylists:
+        for ids in item['items']:
+            playlistId = ids['id']
+            playlistIds.append(playlistId)
+
+    for i in playlistIds:
+        playlist_item = get_channel_playlist_items(service, playlistIds)
+        playlist_items.append(playlist_item)
+
     # print(profils, channelIDs)        
 
-    return profils, channelIDs
+    return profils, channelIDs, channelinfos, channelplaylists, playlistIds, playlist_items
 
 def get_video_info(channelIDs):
 
     videoIDLists = []
     videoIDs = []
+    videostats = []
+    comments = []
     
     for i in channelIDs:
-        videoIDList = get_videoList(service, ids= i)
+        videoIDList = get_videoList(service, channelId= i)
         videoIDLists.append(videoIDList)
         #print(videoIDLists)
 
@@ -194,9 +244,35 @@ def get_video_info(channelIDs):
             except:
                 pass
             videoIDs.append(videoID)
-        print(videoIDs)
+        #print(videoIDs)
 
-    return videoIDLists, videoIDs
+    for i in videoIDs:
+        videostat = get_video_data(service, videoId = i)
+        comment = get_video_comments(service, videoId = i)
+        videostats.append(videostat)
+        comments.append(comment)
+
+
+    return videoIDLists, videoIDs, videostats, comments
+
+def save_info(name_list,channelIDs):
+    profils, channelIDs, channelinfos, channelplaylists, playlistIds, playlist_items = get_profil_info(name_list)
+    videoIDLists, videoIDs, videostats, comments = get_video_info(channelIDs)
+
+    data={
+        'profils':profils,
+        'channelIDs':channelIDs,
+        'channelinfos':channelinfos,
+        'playlistIds':playlistIds,
+        'channelplaylists':channelplaylists,
+        'playlist_items':playlist_items,
+        'videoIDLists':videoIDLists,
+        'videoIDs':videoIDs,
+        'videostats':videostats,
+        'comment':comments,
+        }
+
+    d = save_to_json('../data/data_all_info.json', data)
 
 if __name__ == '__main__':
     # When running locally, disable OAuthlib's HTTPs verification. When
@@ -211,7 +287,8 @@ if __name__ == '__main__':
     #get_video_comments(service, 'EUD07IiviJg')
     #get_channel_info(service, 'UCmpptkXu8iIFe6kfDK5o7VQ')
     #get_channel_playlist(service, 'UCmpptkXu8iIFe6kfDK5o7VQ')
+    #get_channel_playlist_items(service, 'PLO_fdPEVlfKoHQ3Ua2NtDL4nmynQC8YiS')
 
-    #profils, channelIDs = get_profil_Info(['Machine Learnia']) # , 'Science4All'
-    
+    profils, channelIDs, channelinfos, channelplaylists, playlistIds, playlist_items = get_profil_info(['Machine Learnia', 'Science4All'])
+    videoIDLists, videoIDs, videostats, comments = get_video_info(channelIDs)
 

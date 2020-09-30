@@ -3,7 +3,6 @@ import pickle
 import json
 import pprint
 import requests
-import pandas as pd
 import google.oauth2.credentials
  
 from googleapiclient.discovery import build
@@ -255,7 +254,7 @@ def get_video_info(channelIDs):
 
     return videoIDLists, videoIDs, videostats, comments
 
-def save_info(name_list,channelIDs):
+def save_info(name_list):
     profils, channelIDs, channelinfos, channelplaylists, playlistIds, playlist_items = get_profil_info(name_list)
     videoIDLists, videoIDs, videostats, comments = get_video_info(channelIDs)
 
@@ -291,6 +290,7 @@ if __name__ == '__main__':
     #get_channel_playlist(service, 'UCmpptkXu8iIFe6kfDK5o7VQ')
     #get_channel_playlist_items(service, 'PLO_fdPEVlfKoHQ3Ua2NtDL4nmynQC8YiS')
 
-    profils, channelIDs, channelinfos, channelplaylists, playlistIds, playlist_items = get_profil_info(['Machine Learnia', 'Science4All'])
-    videoIDLists, videoIDs, videostats, comments = get_video_info(channelIDs)
+    #profils, channelIDs, channelinfos, channelplaylists, playlistIds, playlist_items = get_profil_info(['Machine Learnia', 'Science4All'])
+    #videoIDLists, videoIDs, videostats, comments = get_video_info(channelIDs)
+    save_info(['Machine Learnia', 'Science4All'])
 

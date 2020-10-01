@@ -88,7 +88,7 @@ def get_video_data(service, videoId):
     """
 
     request = service.videos().list(
-        part="snippet, statistics, topicDetails",
+        part="id, snippet, statistics, topicDetails",
         id= videoId #"-biOGdYiF-I"
     )
     response = request.execute()
@@ -134,6 +134,26 @@ def get_channel_info(service, channelId):
     save_to_json('../data/channel_info.json', response)
     return response
 
+def get_channel_subscriptions(service, channelId):
+    """
+    Get a channel’s subscriptions
+
+    The maxResults parameter specifies the maximum number of items that should be returned in the result set. 
+    Acceptable values are 0 to 50, inclusive. The default value is 5.
+    """
+
+    request = service.subscriptions().list(
+        part="snippet",
+        id= channelId, #"UC8CU5nVhCQIdAGrFFp4loOQ"
+        maxResults = 20
+    )
+    response = request.execute()
+
+    pp.pprint(response)
+
+    save_to_json('../data/channel_subscriptions.json', response)
+    return response
+
 def get_channel_playlist(service, channelId):
     """
     Get a channel’s playlist
@@ -174,6 +194,7 @@ def get_channel_playlist_items(service, playlistIds):
     save_to_json('../data/channel_playlist_items.json', response)
     return response
 
+
 def save_to_json(files_name, files):
     """
     Save to Json files format
@@ -191,7 +212,7 @@ def get_profil_info(name_list):
     profils = []
     channelIDs = []
     channelinfos = []
-    playlistIds = []
+    #playlistIds = []
     #channelplaylists = []
     #playlist_items = [] 
     
@@ -224,7 +245,7 @@ def get_profil_info(name_list):
 
     # print(profils, channelIDs)        
 
-    return profils, channelIDs, channelinfos, channelplaylists#, playlistIds, playlist_items
+    return profils, channelIDs, channelinfos, #channelplaylists , playlistIds, playlist_items
 
 def get_video_info(channelIDs):
 
@@ -257,16 +278,13 @@ def get_video_info(channelIDs):
     return videoIDLists, videoIDs, videostats, comments
 
 def save_info(name_list):
-    profils, channelIDs, channelinfos, channelplaylists, playlistIds, playlist_items = get_profil_info(name_list)
+    profils, channelIDs, channelinfos = get_profil_info(name_list)
     videoIDLists, videoIDs, videostats, comments = get_video_info(channelIDs)
 
     data={
         'profils':profils,
         'channelIDs':channelIDs,
         'channelinfos':channelinfos,
-        'playlistIds':playlistIds,
-        'channelplaylists':channelplaylists,
-        'playlist_items':playlist_items,
         'videoIDLists':videoIDLists,
         'videoIDs':videoIDs,
         'videostats':videostats,
@@ -290,9 +308,10 @@ def save_info(name_list):
     return data
 
 # 1000's first Youtuber list
-youtuber = pd.read_csv("../data/youtuber.csv") 
-youtuber_name = youtuber['1']
-list_of_youtubers = youtuber_name[1:].to_list()
+youtuber = pd.read_csv("../data/youtuber_list_20200930.csv")
+#print(youtuber['ChannelInfo'])
+youtuber_name = youtuber['ChannelInfo']
+list_of_youtubers = youtuber_name.to_list()
 print('List of youtubers: ', list_of_youtubers)
 print('Type of listOfNames: ', type(list_of_youtubers))
 
@@ -308,13 +327,16 @@ for i in list_of_youtubers:
 print(len(youtubers))
 mylist = list(dict.fromkeys(youtubers))
 print(len(mylist))
-print(mylist)
+#print(mylist)
 
 # Select Random 250 youtuber names
-#sampling = random.choices(mylist, k=50)
+sampling = random.choices(mylist, k=50)
 # Remove any duplicates from a List
-#print(len(sampling))
-#print(sampling)
+print(len(sampling))
+print(sampling)
+print(sampling[:10]) 
+# ['Bruno Mars', 'Prince Royce', 'BeyoncéVEVO', 'CookieSwirlC', 'Lil Wayne', 'HaerteTest',
+#  'Tyga', 'CNN', 'TED-Ed', 'News24']
 
 if __name__ == '__main__':
     # When running locally, disable OAuthlib's HTTPs verification. When
@@ -330,9 +352,10 @@ if __name__ == '__main__':
     #get_channel_info(service, 'UCmpptkXu8iIFe6kfDK5o7VQ')
     #get_channel_playlist(service, 'UCmpptkXu8iIFe6kfDK5o7VQ')
     #get_channel_playlist_items(service, 'PLO_fdPEVlfKoHQ3Ua2NtDL4nmynQC8YiS')
+    #get_channel_subscriptions(service, 'UC0NCbj8CxzeCGIF6sODJ-7A')
 
     #profils, channelIDs, channelinfos, channelplaylists, playlistIds, playlist_items = get_profil_info(['Machine Learnia', 'Science4All'])
     #videoIDLists, videoIDs, videostats, comments = get_video_info(channelIDs)
-    #save_info(sampling)
+    save_info(['Bethany Mota', 'TED-Ed'])
 
     

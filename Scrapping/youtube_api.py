@@ -374,6 +374,11 @@ if __name__ == '__main__':
     #save_info(['Unbox Therapy']) #data_all_info_15
     #save_info(['nigahiga']) #data_all_info_16
     #save_info(['Kimberly Loaiza']) #data_all_info_17
-    save_info(['CarryMinati']) #data_all_info_18
+    #save_info(['CarryMinati']) #data_all_info_18
+    #save_info(['AuthenticGames']) #data_all_info_19
+    #save_info(['Pencilmation', 'Joey Graceffa']) #data_all_info_20
+    #save_info(['Matt Steffanina', 'YOLO']) #data_all_info_21
+    #save_info(['Rosanna Pansino']) #data_all_info_22
+
 
     

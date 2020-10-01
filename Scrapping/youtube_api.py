@@ -3,6 +3,8 @@ import pickle
 import json
 import pprint
 import requests
+import random
+import pandas as pd
 import google.oauth2.credentials
  
 from googleapiclient.discovery import build
@@ -71,7 +73,7 @@ def get_videoList(service, channelId):
     request = service.search().list(
         part="snippet",
         channelId= channelId, #"-biOGdYiF-I"
-        maxResults = 50
+        maxResults = 25
     )
     response = request.execute()
 
@@ -190,8 +192,8 @@ def get_profil_info(name_list):
     channelIDs = []
     channelinfos = []
     playlistIds = []
-    channelplaylists = []
-    playlist_items = [] 
+    #channelplaylists = []
+    #playlist_items = [] 
     
 
     for i in name_list:
@@ -207,22 +209,22 @@ def get_profil_info(name_list):
 
     for i in channelIDs:
         channelinfo = get_channel_info(service, channelId= i)
-        channelplaylist = get_channel_playlist(service, channelId= i)
+        #channelplaylist = get_channel_playlist(service, channelId= i)
         channelinfos.append(channelinfo)
-        channelplaylists.append(channelplaylist)
+        #channelplaylists.append(channelplaylist)
 
-    for item in channelplaylists:
-        for ids in item['items']:
-            playlistId = ids['id']
-            playlistIds.append(playlistId)
+    #for item in channelplaylists:
+    #    for ids in item['items']:
+    #        playlistId = ids['id']
+    #        playlistIds.append(playlistId)
 
-    for i in playlistIds:
-        playlist_item = get_channel_playlist_items(service, playlistIds)
-        playlist_items.append(playlist_item)
+    #for i in playlistIds:
+    #    playlist_item = get_channel_playlist_items(service, playlistIds)
+    #    playlist_items.append(playlist_item)
 
     # print(profils, channelIDs)        
 
-    return profils, channelIDs, channelinfos, channelplaylists, playlistIds, playlist_items
+    return profils, channelIDs, channelinfos, channelplaylists#, playlistIds, playlist_items
 
 def get_video_info(channelIDs):
 
@@ -271,9 +273,48 @@ def save_info(name_list):
         'comment':comments,
         }
 
+    # Convert Lists to Nestings Dictionary 
+    # Using list comprehension + zip() 
+    # res = [{a: {b: c}} for (a, b, c, d e, f, i) in zip(profils, 
+    #                                        channelIDs, 
+    #                                        channelinfos, 
+    #                                        videoIDLists,
+    #                                        videoIDs,
+    #                                        videostats,
+    #                                        comments
+    #                                        )] 
+ 
+
     save_to_json('../data/data_all_info.json', data)
 
     return data
+
+# 1000's first Youtuber list
+youtuber = pd.read_csv("../data/youtuber.csv") 
+youtuber_name = youtuber['1']
+list_of_youtubers = youtuber_name[1:].to_list()
+print('List of youtubers: ', list_of_youtubers)
+print('Type of listOfNames: ', type(list_of_youtubers))
+
+# Remove spaces from list_of_youtubers
+youtubers = []
+for i in list_of_youtubers:
+    j = i.strip()
+    #Remove empty string
+    if (j != ''):
+        youtubers.append(j)
+
+# Remove any duplicates from a List
+print(len(youtubers))
+mylist = list(dict.fromkeys(youtubers))
+print(len(mylist))
+print(mylist)
+
+# Select Random 250 youtuber names
+#sampling = random.choices(mylist, k=50)
+# Remove any duplicates from a List
+#print(len(sampling))
+#print(sampling)
 
 if __name__ == '__main__':
     # When running locally, disable OAuthlib's HTTPs verification. When
@@ -292,5 +333,6 @@ if __name__ == '__main__':
 
     #profils, channelIDs, channelinfos, channelplaylists, playlistIds, playlist_items = get_profil_info(['Machine Learnia', 'Science4All'])
     #videoIDLists, videoIDs, videostats, comments = get_video_info(channelIDs)
-    save_info(['Machine Learnia', 'Science4All'])
+    #save_info(sampling)
 
+    

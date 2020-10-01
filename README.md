@@ -53,6 +53,7 @@ When you run the script you will be presented with an authorization URL. Copy it
 ![Image of Google API - 1](https://i2.wp.com/python.gotrained.com/wp-content/uploads/2019/02/screenshot20.png?w=1202&ssl=1)
 Select your desired account and grant your script the requested permissions. Confirm your choice.
 ![Image of Google API - 2](https://python.gotrained.com/?attachment_id=1431)
+
 Copy and paste the code from the browser back in the Terminal / Command Prompt.
 At this point, your script should exit successfully indicating that you have properly setup your client.
 

@@ -17,7 +17,7 @@ pp = pprint.PrettyPrinter(indent=4)
 # The CLIENT_SECRETS_FILE variable specifies the name of a file that contains
 # the OAuth 2.0 information for this application, including its client_id and
 # client_secret.
-CLIENT_SECRETS_FILE = "client_secret.json" # upload your own key API	
+CLIENT_SECRETS_FILE = "client_secret_2.json" # upload your own key API	
 
 # This OAuth 2.0 access scope allows for full read/write access to the
 # authenticated user's account and requires requests to use an SSL connection.
@@ -356,6 +356,24 @@ if __name__ == '__main__':
 
     #profils, channelIDs, channelinfos, channelplaylists, playlistIds, playlist_items = get_profil_info(['Machine Learnia', 'Science4All'])
     #videoIDLists, videoIDs, videostats, comments = get_video_info(channelIDs)
-    save_info(['Bethany Mota', 'TED-Ed'])
+
+    #save_info(['Bethany Mota', 'TED-Ed']) #data_all_info_1
+    #save_info(['CNN']) #data_all_info_2
+    #save_info(['News24']) #data_all_info_3
+    #save_info(['Bruno Mars']) #data_all_info_4
+    #save_info(['Gordon Ramsay']) #data_all_info_5
+    #save_info(['Zoella']) #data_all_info_6
+    #save_info(['David Dobrik']) #data_all_info_7
+    #save_info(['Netflix']) #data_all_info_8
+    #save_info(['Vogue']) #data_all_info_9
+    #save_info(['Safiya Nygaard']) #data_all_info_10
+    #save_info(['TEDx Talks']) #data_all_info_11
+    #save_info(['The Tonight Show Starring Jimmy Fallon']) #data_all_info_12
+    #save_info(['Billie Eilish']) #data_all_info_13
+    #save_info(['BuzzFeedVideo']) #data_all_info_14
+    #save_info(['Unbox Therapy']) #data_all_info_15
+    #save_info(['nigahiga']) #data_all_info_16
+    #save_info(['Kimberly Loaiza']) #data_all_info_17
+    save_info(['CarryMinati']) #data_all_info_18
 
     

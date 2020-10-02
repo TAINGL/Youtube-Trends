@@ -49,7 +49,7 @@ def scrapping():
     df.columns = df.columns.str.replace(' ', '')
 
     # Save to csv file
-    filename = "%s%s%s" % ("data/youtuber_list", _getToday() ,".csv")
+    filename = "%s_%s.%s" % ("data/youtuber_list", _getToday() ,".csv")
     df.to_csv(filename)
 
     youtuber_name = df['ChannelInfo']

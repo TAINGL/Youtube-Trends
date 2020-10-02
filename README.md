@@ -62,7 +62,12 @@ If you run the script again you will notice that a file named token.pickle is cr
 2. Build model
 
 3. Creating DataBase
-
+compass-atlas: mongodb+srv://Laura:laura123@youtubers.ffrhx.mongodb.net/test
 
 4. Run Application
  
+ ```python
+export FLASK_APP=hello.py
+flask run
+# * Running on http://127.0.0.1:5000/
+ ```

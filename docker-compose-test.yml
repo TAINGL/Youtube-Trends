@@ -1,0 +1,40 @@
+# docker-compose.yml
+
+version: '2'
+
+services:
+  app:
+    build: .
+    container_name: flask
+    image: youtube-app
+    restart: unless-stopped
+    links:
+      - mongodb
+    ports:
+      - "0.0.0.0:1880:1880"
+    volumes:
+      - ./:/application
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: unless-stopped
+    command: mongod --auth
+    ports:
+      - '3306:3306'
+    environment:
+      - MONGODB_DATABASE=youtube-trends 
+      - MONGODB_USERNAME=Laura
+      - MONGODB_PASSWORD=secret #laura123
+      - MONGODB_HOSTNAME=test 
+    volumes:
+      - ./:/mongodb
+
+  nlp:
+    build:
+      context: ./nlp
+      dockerfile: ./Dockerfile
+    ports:
+      - 8181:5000
+    volumes:
+      - ./nlp:/app

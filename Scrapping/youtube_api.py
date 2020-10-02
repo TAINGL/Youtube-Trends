@@ -312,6 +312,7 @@ youtuber = pd.read_csv("../data/youtuber_list_20200930.csv")
 #print(youtuber['ChannelInfo'])
 youtuber_name = youtuber['ChannelInfo']
 list_of_youtubers = youtuber_name.to_list()
+
 print('List of youtubers: ', list_of_youtubers)
 print('Type of listOfNames: ', type(list_of_youtubers))
 
@@ -338,6 +339,7 @@ print(sampling[:10])
 # ['Bruno Mars', 'Prince Royce', 'BeyoncéVEVO', 'CookieSwirlC', 'Lil Wayne', 'HaerteTest',
 #  'Tyga', 'CNN', 'TED-Ed', 'News24']
 
+
 if __name__ == '__main__':
     # When running locally, disable OAuthlib's HTTPs verification. When
     # running in production *do not* leave this option enabled.
@@ -356,6 +358,7 @@ if __name__ == '__main__':
 
     #profils, channelIDs, channelinfos, channelplaylists, playlistIds, playlist_items = get_profil_info(['Machine Learnia', 'Science4All'])
     #videoIDLists, videoIDs, videostats, comments = get_video_info(channelIDs)
+
 
     #save_info(['Bethany Mota', 'TED-Ed']) #data_all_info_1
     #save_info(['CNN']) #data_all_info_2
@@ -379,6 +382,5 @@ if __name__ == '__main__':
     #save_info(['Pencilmation', 'Joey Graceffa']) #data_all_info_20
     #save_info(['Matt Steffanina', 'YOLO']) #data_all_info_21
     #save_info(['Rosanna Pansino']) #data_all_info_22
-
 
     

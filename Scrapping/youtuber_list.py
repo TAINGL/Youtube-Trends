@@ -38,6 +38,11 @@ def scrapping():
     tab_data = [[cell.text for cell in row.find_all(["th","td"])]
                             for row in table.find_all("tr")]
 
+    # Get scores
+    scores = []
+    for td in soup("td", class_="text nox-score"):
+        scores.append(td['data-score'])
+
     # convert tab_data list to dataframe
     df = pd.DataFrame(tab_data)
     
@@ -48,8 +53,11 @@ def scrapping():
     # Remove extra spaces from column names
     df.columns = df.columns.str.replace(' ', '')
 
+    df.drop(['NoxScore'], axis=1)
+    df['NoxScore'] = scores
+
     # Save to csv file
-    filename = "%s_%s.%s" % ("data/youtuber_list", _getToday() ,".csv")
+    filename = "%s_%s%s" % ("data/youtuber_list", _getToday() ,".csv")
     df.to_csv(filename)
 
     youtuber_name = df['ChannelInfo']

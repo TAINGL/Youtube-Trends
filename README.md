@@ -59,7 +59,13 @@ At this point, your script should exit successfully indicating that you have pro
 
 If you run the script again you will notice that a file named token.pickle is created. Once this file is created, running the script again does not launch the authorization flow.
 
+#### Get List of most populate Youtubers
+![Top 250 Youtuber List](https://www.noxinfluencer.com/youtube-channel-rank/top-100-nl-all-youtuber-sorted-by-subs-weekly)
+
+Use of Selenium and Beautiful Soup to scrap the top 250 Youtubers Channel Info, Category, Subscribers, 	Avg.Views and Scores -> Scrapping/youtuber_list.py
+
 2. Build model
+
 
 3. Creating DataBase
 

@@ -64,6 +64,7 @@ If you run the script again you will notice that a file named token.pickle is cr
 
 Use of Selenium and Beautiful Soup to scrap the top 250 Youtubers Channel Info, Category, Subscribers, 	Avg.Views and Scores -> Scrapping/youtuber_list.py
 
+
 2. Build model
 
 

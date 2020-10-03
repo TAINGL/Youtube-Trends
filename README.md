@@ -69,7 +69,12 @@ Use of Selenium and Beautiful Soup to scrap the top 250 Youtubers Channel Info, 
 
 
 3. Creating DataBase
-
+compass-atlas: mongodb+srv://Laura:laura123@youtubers.ffrhx.mongodb.net/test
 
 4. Run Application
  
+ ```python
+export FLASK_APP=hello.py
+flask run
+# * Running on http://127.0.0.1:5000/
+ ```

@@ -14,7 +14,7 @@ print(arguments)
 with open(sys.argv[1]) as json_file: 
     data = json.load(json_file)
 
-_id = []
+channelid = []
 title = []
 description = []
 url = []
@@ -31,7 +31,6 @@ video_commentCount = []
 video_dislikeCount = []
 video_likeCount = []
 video_viewCount = []
-commentvideo_id = []
 commentId = []
 authorChannelId = []
 authorChannelUrl = []
@@ -39,11 +38,14 @@ authorDisplayName = []
 authorProfileImageUrl = []
 likeCount = []
 textDisplay = []
+commentchannel_id = []
+channelvideo_id = []
+commentvideo_id = []
 
 #Create lists for channel_info
 for item in data['channelinfos']:
     for snip in item['items']:
-        _id.append(snip['id'])
+        channelid.append(snip['id'])
         title.append(snip['snippet']['title'])
         description.append(snip['snippet']['description'])
         url.append(snip['snippet']['thumbnails']['high']['url'])
@@ -55,61 +57,63 @@ for item in data['channelinfos']:
         subscriberCount.append(snip['statistics']['subscriberCount'])
 
 # Create lists for video_data
-for videos in data['videoIDLists']:
-    for vids in videos['items']:
-        if 'videoId' in vids['id']:
-            videoId.append(vids['id']['videoId'])
+for videodata in data['videoIDLists']:
+    for vidata in videodata['items']:
+        if 'videoId' in vidata['id']:
+            videoId.append(vidata['id']['videoId'])
         else:
             videoId.append("")
-        video_title.append(vids['snippet']['title'])
-        video_description.append(vids['snippet']['description'])
+        channelvideo_id.append(vidata['snippet']['channelId'])
+        video_title.append(vidata['snippet']['title'])
+        video_description.append(vidata['snippet']['description'])
 
-#Create lists for video_data
-for videos in data['videostats']:
-    for vids in videos['items']:
-        if 'tags' in vids['snippet']:
-            video_tags.append(vids['snippet']['tags'])
+#Create lists for video_stats
+for videostats in data['videostats']:
+    for stats in videostats['items']:
+        if 'tags' in stats['snippet']:
+            video_tags.append(stats['snippet']['tags'])
         else:
             video_tags.append("")
-        video_viewCount.append(vids['statistics']['viewCount'])
-        video_likeCount.append(vids['statistics']['likeCount'])
-        video_dislikeCount.append(vids['statistics']['dislikeCount'])
-        video_commentCount.append(vids['statistics']['commentCount'])
-        if 'topicDetails' in vids:
-            topicCategories.append(vids['topicDetails']['topicCategories'])
+        video_viewCount.append(stats['statistics']['viewCount'])
+        video_likeCount.append(stats['statistics']['likeCount'])
+        video_dislikeCount.append(stats['statistics']['dislikeCount'])
+        video_commentCount.append(stats['statistics']['commentCount'])
+        if 'topicDetails' in stats:
+            topicCategories.append(stats['topicDetails']['topicCategories'])
         else:
             topicCategories.append("")
-        video_thumbnails.append(vids['snippet']['thumbnails']['high']['url'])
+        video_thumbnails.append(stats['snippet']['thumbnails']['high']['url'])
 
-#reate lists for video_comment
-for videos in data['comment']:
-    for vids in videos['items']:
-        commentvideo_id.append(vids['snippet']['topLevelComment']['snippet']['videoId'])
-        textDisplay.append(vids['snippet']['topLevelComment']['snippet']['textDisplay'])
-        authorDisplayName.append(vids['snippet']['topLevelComment']['snippet']['authorDisplayName'])
-        authorProfileImageUrl.append(vids['snippet']['topLevelComment']['snippet']['authorProfileImageUrl'])
-        authorChannelUrl.append(vids['snippet']['topLevelComment']['snippet']['authorChannelUrl'])
-        if 'authorChannelId' in vids['snippet']['topLevelComment']['snippet']:
-            authorChannelId.append(vids['snippet']['topLevelComment']['snippet']['authorChannelId']['value'])
+#Create lists for video_comment
+for comments in data['comment']:
+    for cmts in comments['items']:
+        commentvideo_id.append(cmts['id'])
+        commentchannel_id.append(cmts['snippet']['topLevelComment']['snippet']['videoId'])
+        textDisplay.append(cmts['snippet']['topLevelComment']['snippet']['textDisplay'])
+        authorDisplayName.append(cmts['snippet']['topLevelComment']['snippet']['authorDisplayName'])
+        authorProfileImageUrl.append(cmts['snippet']['topLevelComment']['snippet']['authorProfileImageUrl'])
+        authorChannelUrl.append(cmts['snippet']['topLevelComment']['snippet']['authorChannelUrl'])
+        if 'authorChannelId' in cmts['snippet']['topLevelComment']['snippet']:
+            authorChannelId.append(cmts['snippet']['topLevelComment']['snippet']['authorChannelId']['value'])
         else:
             authorChannelId.append("")
-        likeCount.append(vids['snippet']['topLevelComment']['snippet']['likeCount'])
-        commentId.append(vids['snippet']['topLevelComment']['id'])
+        likeCount.append(cmts['snippet']['topLevelComment']['snippet']['likeCount'])
+        commentId.append(cmts['snippet']['topLevelComment']['id'])
 
 #Convert lists for channel_info to dataframe
-channel_info = pd.DataFrame(list(zip(_id,title,description,url,language,viewCount,subscriberCount,videoId)), 
-               columns =['channelid','title','description','url','language','viewcount','subscribercount','videoid']) 
+channel_info = pd.DataFrame(list(zip(channelid,title,description,url,language,viewCount,subscriberCount)), 
+               columns =['channelid','title','description','url','language','viewcount','subscribercount']) 
 #Convert lists for video_data to dataframe
-video_data = pd.DataFrame(list(zip(_id,videoId,video_title,video_description,topicCategories,video_thumbnails,video_tags,video_commentCount,video_dislikeCount,video_likeCount,video_viewCount,commentvideo_id,commentId)), 
-               columns =['channelid','videoid','video_title','video_description','topiccategories','videothumbnails','videotags','videocommentcount','videodislikecount','videolikeCount','videoviewcount','commentvideoid','commentid']) 
+video_data = pd.DataFrame(list(zip(channelvideo_id,videoId,video_title,video_description,topicCategories,video_thumbnails,video_tags,video_commentCount,video_dislikeCount,video_likeCount,video_viewCount)), 
+               columns =['channelid','videoid','video_title','video_description','topiccategories','videothumbnails','videotags','videocommentcount','videodislikecount','videolikeCount','videoviewcount']) 
 #Convert lists for video_comment to dataframe
-video_comment = pd.DataFrame(list(zip(_id,videoId,commentvideo_id,commentId,authorChannelId,authorChannelUrl,authorDisplayName,authorProfileImageUrl,likeCount,textDisplay)), 
-               columns =['channelid','videoid','commentvideoid','commentid','authorchannelid','authorchannelurl','authordisplayname','authorprofileimageurl','likecount','textdisplay']) 
+video_comment = pd.DataFrame(list(zip(commentchannel_id,commentId,authorChannelId,authorChannelUrl,authorDisplayName,authorProfileImageUrl,likeCount,textDisplay)), 
+               columns =['videoid','commentid','authorchannelid','authorchannelurl','authordisplayname','authorprofileimageurl','likecount','textdisplay'])
 
 #Save as csv and add header if not exist
-filename='channel_info.csv'
-filename1='video_data.csv'
-filename2='video_comment.csv'
+filename='../data/channel_info.csv'
+filename1='../data/video_data.csv'
+filename2='../data/video_comment.csv'
 
 with open(filename, 'a') as f:
     channel_info.to_csv(f, header=f.tell()==0)

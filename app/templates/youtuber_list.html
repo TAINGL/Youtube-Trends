@@ -7,7 +7,7 @@
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <title>
-    Black Dashboard by Creative Tim
+    Youtube Recommendation by Oorvasi and Laura
   </title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
@@ -20,8 +20,8 @@
   <link href="../static/assets/demo/demo.css" rel="stylesheet" />
 </head>
 
-<body class="">
-  <div class="sidebar">
+<body class="white-content">
+  <div class="sidebar" data="blue">
     <!--
       Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red"
   -->
@@ -71,7 +71,7 @@
         </div>
 
         <!--Top Youtuber List-->
-        <div class="col-lg-6 col-md-12">
+        <div class="col-lg-8 col-md-12">
           <div class="card ">
             <div class="card-body">
               <div class="table-responsive" style="max-height: 800px; overflow: scroll;">
@@ -99,6 +99,7 @@
                     {% for youtuber in youtuberList %}
                     <tr>
                       <td>
+                        <img src="{{youtuber.Avatar}}" class="avatar-img" alt="{{youtuber.ChannelInfo}}">
                         {{youtuber.ChannelInfo}}
                       </td>
                       <td>
@@ -108,7 +109,7 @@
                         {{youtuber.Subscribers}}
                       </td>
                       <td>
-                        {{youtuber.Avg}}
+                        {{youtuber.Avg.Views}}
                       </td>
                       <td>
                         {{youtuber.NoxScore}}

@@ -103,4 +103,4 @@ def comments_splitting(df_comments):
     show_word_cloud(bad_reviews_cloud, 'bad comments')
 
 #df_comments, count_good, count_bad = sentiment_analysis('koMbIaJ8Tmo')
-#comments_split(df_comments)
+#comments_splitting(df_comments)

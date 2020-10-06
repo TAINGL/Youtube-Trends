@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup as bs
 import random
 import pandas as pd
 import datetime
+import re
 
 def _getToday():
     return datetime.date.today().strftime("%Y%m%d")
@@ -38,23 +39,46 @@ def scrapping():
     tab_data = [[cell.text for cell in row.find_all(["th","td"])]
                             for row in table.find_all("tr")]
 
+    #Remove empty row
+    tab_data.pop(280)
+
     # Get scores
     scores = []
     for td in soup("td", class_="text nox-score"):
         scores.append(td['data-score'])
 
+    scores.pop(280)
+
+    # Get channelIds and Avatar
+    channelID = []
+    avatar = []
+    for row in table.find_all("a", class_="star-avatar"):
+        channelID.append(row['href'])
+        for img in row.find_all("img", class_="avatar"):
+            avatar.append(img['src'])
+
+    channelID.pop(280)
+
     # convert tab_data list to dataframe
     df = pd.DataFrame(tab_data)
-    
+
     # Replace column names with second row
     df.columns = df.iloc[0,:]
     df.drop(index=0,inplace=True)
 
-    # Remove extra spaces from column names
-    df.columns = df.columns.str.replace(' ', '')
+    df['Channelid'] = channelID
+    df['Avatar'] = avatar
 
-    df.drop(['NoxScore'], axis=1)
+    # Rename Columns
+    df.drop(df.columns[[0]], axis=1, inplace=True)
+    df.columns = ['ChannelInfo','Category','Subscribers','Avg.Views','NoxScore','Channelid','Avatar']
+
     df['NoxScore'] = scores
+
+    #Apply regex to select required values
+    df['Subscribers'] = df['Subscribers'].replace(regex=True,to_replace=r'(?<=[a-zA-Z])[^\]]+',value=r'')
+    df['Avg.Views'] = df['Avg.Views'].replace(regex=True,to_replace=r'(?<=[a-zA-Z])[^\]]+',value=r'')
+    df['Channelid'] = df['Channelid'].map(lambda x: x.lstrip('/youtube/channel/'))
 
     # Save to csv file
     filename = "%s_%s%s" % ("data/youtuber_list", _getToday() ,".csv")
@@ -77,7 +101,6 @@ def scrapping():
     sampling = random.choices(youtubers, k=250)
 
     return sampling
-    
 
 sample = scrapping()
 print(sample)

@@ -11,13 +11,9 @@ app = Flask(__name__, template_folder='templates')
 # global variables for data persistence across requests
 model_output=""
 
-try:
- client = MongoClient("mongodb+srv://youtuber:youtuber123@youtubers.ffrhx.mongodb.net/test") #host uri
- print("Connected to Avengers MongoClient Successfully from Project Script!!!")
-except:
- print("Connection to MongoClient Failed!!!")
-
-db = client.youtube_trends
+CONNECTION_STRING = "mongodb+srv://youtuber:youtuber123@youtubers.ffrhx.mongodb.net/youtube_trends?retryWrites=true&w=majority"
+client = pymongo.MongoClient(CONNECTION_STRING)
+db = client.get_database('youtube_trends')
 
 # main index page route
 @app.route('/', methods=['GET','POST'])

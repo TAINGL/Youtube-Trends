@@ -1,7 +1,10 @@
-# YOUTUBE
+# YOUTUBER RECOMMENDATION SYSTEM
+If you are a marketing Professional and you want to do a collaboration with an influencer, you must have asked yourself how to choose any of their product that you would like to sell.
 
+The objective of this app is to help and guide you with a choice.  You will get the possibility to review the statistics of each youtuber's channel and be able to recommend another as per the categories or featured channels of the latter.
 
 ## 1. Collecting YouTube Data
+For this project, youtube api was used to get the required data that will be stored in a mongo database.  For the models, hugging face will be used, and a Flask application will be deployed to be able to access the recommendation system.
 
 ### 1.1 Getting Started with YouTube API
 
@@ -60,17 +63,21 @@ At this point, your script should exit successfully indicating that you have pro
 
 If you run the script again you will notice that a file named token.pickle is created. Once this file is created, running the script again does not launch the authorization flow.
 
-#### Get List of most populate Youtubers
-![Top 250 Youtuber List](https://www.noxinfluencer.com/youtube-channel-rank/top-100-nl-all-youtuber-sorted-by-subs-weekly)
+#### Get List of top 1000 Youtubers
+[Top 1000 Youtuber List](https://www.noxinfluencer.com/youtube-channel-rank/top-1000-all-all-youtuber-sorted-by-subs-weekly)
 
-Use of Selenium and Beautiful Soup to scrap the top 250 Youtubers Channel Info, Category, Subscribers, 	Avg.Views and Scores -> Scrapping/youtuber_list.py
+Use of Selenium and Beautiful Soup to scrape the top 1000 Youtubers avatars, Channel ids, Channel Infos, Categories, Subscribers, Avg.Views and Scores -> Scrapping/youtuber_list.py
 
+#### Get list of featured channels
+Use of youtube api to get featured channel of different channels.
 
 2. Build model
 
-
 3. Creating DataBase
-compass-atlas: mongodb+srv://Laura:laura123@youtubers.ffrhx.mongodb.net/test
+
+Create Account on [mongo](https://www.mongodb.com/)
+
+compass-atlas connection: mongodb+srv://<user>:<password>@youtubers.ffrhx.mongodb.net/test
 
 4. Run Application
  
@@ -79,5 +86,3 @@ export FLASK_APP=hello.py
 flask run
 # * Running on http://127.0.0.1:5000/
  ```
-# test - vasi
-test - commit

@@ -113,7 +113,7 @@ def convertChannelDataJsonToCsv(JsonFilename):
     commentchannel_id = []
     channelvideo_id = []
     commentvideo_id = []
-
+    categoryId = []
     #Create lists for channel_info
     for item in data['channelinfos']:
         for snip in item['items']:
@@ -155,6 +155,7 @@ def convertChannelDataJsonToCsv(JsonFilename):
             else:
                 topicCategories.append("")
             video_thumbnails.append(stats['snippet']['thumbnails']['high']['url'])
+            categoryId.append(stats['snippet']['categoryId'])
 
     #Create lists for video_comment
     for comments in data['comment']:
@@ -176,11 +177,14 @@ def convertChannelDataJsonToCsv(JsonFilename):
     channel_info = pd.DataFrame(list(zip(channelid,title,description,url,language,viewCount,subscriberCount)), 
                 columns =['channelid','title','description','url','language','viewcount','subscribercount']) 
     #Convert lists for video_data to dataframe
-    video_data = pd.DataFrame(list(zip(channelvideo_id,videoId,video_title,video_description,topicCategories,video_thumbnails,video_tags,video_commentCount,video_dislikeCount,video_likeCount,video_viewCount)), 
-                columns =['channelid','videoid','video_title','video_description','topiccategories','videothumbnails','videotags','videocommentcount','videodislikecount','videolikeCount','videoviewcount']) 
+    video_data = pd.DataFrame(list(zip(channelvideo_id,videoId,video_title,video_description,topicCategories,video_thumbnails,video_tags,video_commentCount,video_dislikeCount,video_likeCount,video_viewCount,categoryId)), 
+                columns =['channelid','videoid','video_title','video_description','topiccategories','videothumbnails','videotags','videocommentcount','videodislikecount','videolikeCount','videoviewcount','categoryId']) 
     #Convert lists for video_comment to dataframe
     video_comment = pd.DataFrame(list(zip(commentchannel_id,commentId,authorChannelId,authorChannelUrl,authorDisplayName,authorProfileImageUrl,likeCount,textDisplay)), 
                 columns =['videoid','commentid','authorchannelid','authorchannelurl','authordisplayname','authorprofileimageurl','likecount','textdisplay'])
+
+    video_data['topiccategories'] = video_data['topiccategories'].replace(regex=True,to_replace=r'https:\/\/en\.wikipedia\.org\/wiki\/',value=r'')
+    video_data['topiccategories'] = video_data['topiccategories'].replace(regex=True,to_replace=r'_\(sociology\)',value=r'')
 
     #Save as csv and add header if not exist
     filename='../data/channel_info.csv'

@@ -49,7 +49,6 @@ pip install --upgrade google-api-python-client
 # The google-auth-oauthlib and google-auth-httplib2 libraries for user authorization
 pip install --upgrade google-auth-oauthlib google-auth-httplib2
 ```
-
 #### Extraction of Data from YouTube Channels
 Since the Google API client is usually used to access to access all Google APIs, you need to restrict the scope the to YouTube.
 
@@ -63,23 +62,56 @@ At this point, your script should exit successfully indicating that you have pro
 
 If you run the script again you will notice that a file named token.pickle is created. Once this file is created, running the script again does not launch the authorization flow.
 
+
+### 1.2 Without YouTube API
+Because we have a quota for Youtube API: https://developers.google.com/youtube/v3/determine_quota_cost.
+The limit is 10,000 quota per day. 
+So we looked for a way to make requests without the API using : https://github.com/egbertbouman/youtube-comment-downloader
+It's a simple script for downloading Youtube comments without using the Youtube API.
+
+
+### 1.3 Create Dataset
 #### Get List of top 1000 Youtubers
 [Top 1000 Youtuber List](https://www.noxinfluencer.com/youtube-channel-rank/top-1000-all-all-youtuber-sorted-by-subs-weekly)
 
 Use of Selenium and Beautiful Soup to scrape the top 1000 Youtubers avatars, Channel ids, Channel Infos, Categories, Subscribers, Avg.Views and Scores -> Scrapping/youtuber_list.py
 
+We selected 25 of the 1000 Youtubers on the list to make API requests. 
+We get the following information: profils, channelIDs, channelinfos, videoIDLists, videoIDs, videostats,comments.
+
 #### Get list of featured channels
 Use of youtube api to get featured channel of different channels.
 
-2. Build model
+## 2. Build model
+Here we used Hugging Face for sequence classification, summarization and translation text.
+- https://github.com/huggingface/transformers
+- https://huggingface.co/transformers/task_summary.html
 
-3. Creating DataBase
+There are two models, one with API and without Youtube API.
+
+### 2.1 Sequence Classification: 
+Here we used a pipelines to do sentiment analysis: identifying if a sequence is positive or negative. It leverages a fine-tuned model on sst2, which is a GLUE task.
+This returns a label (“POSITIVE” or “NEGATIVE”). 
+After counting the number of elements for each label, we display the predominant result and the wordcloud for each of the labels.
+
+### 2.2 Summarization: 
+Summarization is the task of summarizing a document or an article into a shorter text.
+
+### 2.3 Translation: 
+Translation is the task of translating a text from one language to another.
+We used pytube3 for collect caption tracks from youtube video: https://python-pytube.readthedocs.io/en/latest/user/quickstart.html#subtitle-caption-tracks
+
+```python
+pip install pytube3
+```
+
+## 3. Creating DataBase
 
 Create Account on [mongo](https://www.mongodb.com/)
 
 compass-atlas connection: mongodb+srv://<user>:<password>@youtubers.ffrhx.mongodb.net/test
 
-4. Run Application
+## 4. Run Application
  
  ```python
 export FLASK_APP=hello.py

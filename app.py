@@ -12,7 +12,7 @@ app = Flask(__name__, template_folder='templates')
 model_output=""
 
 try:
- client = MongoClient("mongodb+srv://youtuber:youtuber123@youtubers.ffrhx.mongodb.net/test") #host uri
+ client = MongoClient("mongodb+srv://youtuber:youtuber123@youtubers.ffrhx.mongodb.net/test?retryWrites=true&w=majority") #host uri
  print("Connected to Avengers MongoClient Successfully from Project Script!!!")
 except:
  print("Connection to MongoClient Failed!!!")

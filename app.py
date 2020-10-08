@@ -50,6 +50,13 @@ def youtubers():
 def page_test():
     return render_template('dashboard.html')
 
+#################################
+@app.route('/test_docker', methods=['GET'])
+def page_test():
+    if request.method == 'GET':
+        query = request.args
+        data = mongo.db.users.find_one(query)
+        return jsonify(data), 200
 
 if __name__ == "__main__":
     app.run(debug=True)

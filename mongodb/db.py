@@ -1,6 +1,8 @@
 from pymongo import MongoClient
 from pymongo import ReturnDocument
 from bson.objectid import ObjectId
+import sys
+sys.path.insert(0, '../secret/')
 from secret.config import MongodbConfig
 
 from os import listdir

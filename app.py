@@ -5,14 +5,20 @@ import pymongo
 from bson.json_util import dumps
 import re
 
+import sys
+sys.path.insert(0, '../secret/')
+from secret.config import MongodbConfig
+
 #app initialization
 app = Flask(__name__, template_folder='templates')
 
 # global variables for data persistence across requests
 model_output=""
 
-CONNECTION_STRING = "mongodb+srv://youtuber:youtuber123@youtubers.ffrhx.mongodb.net/youtube_trends?retryWrites=true&w=majority"
-client = pymongo.MongoClient(CONNECTION_STRING)
+# If you work on local mongo compass write "local", 
+# and if you work on mongo atlas write "altas" in MongodbConfig
+URI = MongodbConfig("atlas")
+client = pymongo.MongoClient(URI)
 db = client.get_database('youtube_trends')
 
 # main index page route

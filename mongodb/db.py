@@ -68,6 +68,6 @@ def insert_csv(csv_file):
         data_dict = data.to_dict('records')
 
         for collection in collection_list: 
-            collection.insert_many(data_dict)
+            db.collection.insert_many(data_dict)
         
         return "CSV inserted!"  

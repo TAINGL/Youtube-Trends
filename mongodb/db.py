@@ -60,14 +60,14 @@ def insert_csv(csv_file):
     """
     Insert Many CSV to divers collections on your database
     """
-    collection_list = ['channel_info', 'featured_channels', 'featured_channels_info',
-                        'video_comment', 'video_data', 'youtuber_list']
+    collection_db = [db.channel_info, db.featured_channels, db.featured_channels_info,
+                        db.video_comment, db.video_data, db.youtuber_list]
 
     for csv in csv_file:
         data = pd.read_csv(csv, header=None)
         data_dict = data.to_dict('records')
 
-        for collection in collection_list: 
-            db.collection.insert_many(data_dict)
+        for collection in collection_db: 
+            collection.insert_many(data_dict)
         
         return "CSV inserted!"  

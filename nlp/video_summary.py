@@ -38,7 +38,7 @@ def splitting_text(text, n):
 # Summarization YOUTUBE VIDEO
 def summarizer(text):
     summarizer = pipeline("summarization")
-    summarize = summarizer(text,  min_length=30, max_length=100, do_sample=False)
+    summarize = summarizer(text,  min_length=10, max_length=100, do_sample=False)
     #print(summarize)
     result = summarize[0]['summary_text']
     return result

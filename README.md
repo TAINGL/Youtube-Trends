@@ -65,10 +65,9 @@ If you run the script again you will notice that a file named token.pickle is cr
 
 ### 1.2 Without YouTube API
 Because we have a quota for Youtube API: https://developers.google.com/youtube/v3/determine_quota_cost.
-The limit is 10,000 quota per day. 
-So we looked for a way to make requests without the API using : https://github.com/egbertbouman/youtube-comment-downloader
-It's a simple script for downloading Youtube comments without using the Youtube API.
+The limit is 10,000 quota per day.
 
+So we looked for a way to make requests without the API using : It's a simple script for downloading Youtube comments without using the Youtube API (https://github.com/egbertbouman/youtube-comment-downloader)
 
 ### 1.3 Create Dataset
 #### Get List of top 1000 Youtubers
@@ -91,7 +90,9 @@ There are two models, one with API and without Youtube API.
 
 ### 2.1 Sequence Classification: 
 Here we used a pipelines to do sentiment analysis: identifying if a sequence is positive or negative. It leverages a fine-tuned model on sst2, which is a GLUE task.
+
 This returns a label (“POSITIVE” or “NEGATIVE”). 
+
 After counting the number of elements for each label, we display the predominant result and the wordcloud for each of the labels.
 
 ### 2.2 Summarization: 
@@ -99,6 +100,7 @@ Summarization is the task of summarizing a document or an article into a shorter
 
 ### 2.3 Translation: 
 Translation is the task of translating a text from one language to another.
+
 We used pytube3 for collect caption tracks from youtube video: https://python-pytube.readthedocs.io/en/latest/user/quickstart.html#subtitle-caption-tracks
 
 ```python
@@ -107,11 +109,31 @@ pip install pytube3
 
 ## 3. Creating DataBase
 
-Create Account on [mongo](https://www.mongodb.com/)
+### 3.1 Get Started with Atlas
+https://docs.atlas.mongodb.com/getting-started/
 
-compass-atlas connection: mongodb+srv://<user>:<password>@youtubers.ffrhx.mongodb.net/test
+### 3.2 Get Started with MongDB and MongoDB Compass
+Create Account on [mongo](https://www.mongodb.com/) and follow instruction: https://docs.mongodb.com/compass/master/connect/
 
-## 4. Run Application
+For the application, you need to get the connection string URI: https://docs.mongodb.com/manual/reference/connection-string/
+
+- if you used MongoDB on local, your URI is like this: "mongodb://localhost:27017/[db_name]"
+- if you used MongoDB Atlas, your URI is like this: mongodb+srv://[username]:[password]@[projectname]-gktww.gcp.mongodb.net/[authDB]
+
+Use the config.py file to configure your URI settings. Do not forget to fill in the import:
+```python
+# Here I placed the file in a folder named "secret" 
+import sys
+sys.path.insert(0, '../secret/')
+from secret.config import MongodbConfig
+```
+
+More informations: https://docs.mongodb.com/guides/server/drivers/
+
+## 4. Creating graph database with Neo4j
+
+
+## 5. Run Application
  
  ```python
 export FLASK_APP=hello.py

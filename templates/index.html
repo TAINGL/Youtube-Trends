@@ -1,254 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
-  <title>
-    Youtube Recommendation by Oorvasi and Laura
-  </title>
-  <!--     Fonts and icons     -->
-  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
-  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
-  <!-- Nucleo Icons -->
-  <link href="../static/assets/css/nucleo-icons.css" rel="stylesheet" />
-  <!-- CSS Files -->
-  <link href="../static/assets/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
-  <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link href="../static/assets/demo/demo.css" rel="stylesheet" />
-</head>
-
-<body class="white-content">
-  <div class="sidebar">
-    <!--
-      Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red"
-  -->
-    <div class="sidebar-wrapper">
-      
-      <ul class="nav">
-        <li class="active ">
-          <a href="/channels">
-            <i class="tim-icons icon-chart-pie-36"></i>
-            <p>Channel</p>
-          </a>
-          <a href="/youtuber">
-            <i class="tim-icons icon-chart-pie-36"></i>
-            <p>Youtuber</p>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <div class="wrapper">
-    <div class="main-panel">
-      <!--Search Bar-->
-      <div class="content">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="channels-tab" data-toggle="tab" href="#channels" role="tab"
-              aria-controls="channels" aria-selected="true">Channels</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" id="youtubers-tab" data-toggle="tab" href="#youtubers" role="tab"
-              aria-controls="youtubers" aria-selected="false">Top Youtubers</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" id="theme-tab" data-toggle="tab" href="#theme" role="tab" aria-controls="theme"
-              aria-selected="false">Theme</a>
-          </li>
-        </ul>
-
-        <div class="row">
-          <div class="col-12 mt-3 mb-3">
-            <form class="form-inline" action="{{ url_for('index') }}" method="POST" >
-              <input class="form-control col-10" type="search" name="channelSearch" placeholder="Search for channels" aria-label="Search">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-          </div>
-        </div>
-
-        <!--Channel List-->
-        {% for channel in channelList %}
-        <div class="row">
-          <div class="col-12">
-            <div class="card card-chart">
-              <div>
-                <div class="row no-gutters">
-                  <div class="col-md-4" style="max-width: 240px;">
-                    <img src="{{channel.url}}" class="card-img" alt="{{channel.title}}">
-                  </div>
-                  <div class="col-md-8">
-                    <div class="card-body">
-                      <h5 class="card-title">{{channel.title}}</h5>
-                      <p class="card-text">{{channel.description}}</p>
+{% block content %}
+    <!--Channel List-->
+    {% for channel in channelList %}
+    <div class="row">
+      <div class="col-5">
+        <div class="card card-chart">
+          <div>
+            <div class="row no-gutters">
+              <div class="col-md-2">
+                <img src="{{channel.url}}" class="card-img" alt="{{channel.title}}">
+              </div>
+              <div class="col-md-3">
+                <div class="card-body">
+                  <h5 class="card-title">{{channel.title}}</h5>
+                  <!-- <p class="card-text">{{channel.description}}</p> -->
+                </div>
+                <!-- <div class="card-footer">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <p><i class="fas fa-eye"></i>&nbsp;View Count: {{channel.viewcount}}</p>
                     </div>
-                    <div class="card-footer">
-                      <div class="row">
-                        <div class="col-md-4">
-                          <p><i class="fas fa-eye"></i>&nbsp;View Count: {{channel.viewcount}}</p>
-                        </div>
-                        <div class="col-md-4">
-                          <p><i class="fas fa-users"></i>&nbsp;Subscriber Count: {{channel.subscribercount}}
-                        </div>
-                        {% if channel.language %}<div class="col-md-4">
-                          <p><i class="fas fa-globe"></i>&nbsp;{{channel.language}}</p>
-                        </div>{% endif %}
-                      </div>
+                    <div class="col-md-4">
+                      <p><i class="fas fa-users"></i>&nbsp;Subscriber Count: {{channel.subscribercount}}
                     </div>
-                  </div>
+                    {% if channel.language %}<div class="col-md-4">
+                      <p><i class="fas fa-globe"></i>&nbsp;{{channel.language}}</p>
+                    </div>{% endif %}
+                  </div> -->
                 </div>
               </div>
             </div>
           </div>
         </div>
-        {% endfor %}
-
-
-
-
-
       </div>
-
-    </div>
-  </div>
- 
-  <!--   Core JS Files   -->
-  <script src="../static/assets/js/core/jquery.min.js"></script>
-  <script src="../static/assets/js/core/popper.min.js"></script>
-  <script src="../static/assets/js/core/bootstrap.min.js"></script>
-  <script src="../static/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-  <!--  Google Maps Plugin    -->
-  <!-- Place this tag in your head or just before your close body tag. -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-  <!-- Chart JS -->
-  <script src="../static/assets/js/plugins/chartjs.min.js"></script>
-  <!--  Notifications Plugin    -->
-  <script src="../static/assets/js/plugins/bootstrap-notify.js"></script>
-  <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="../static/assets/js/black-dashboard.min.js?v=1.0.0"></script>
-  <!-- Black Dashboard DEMO methods, don't include it in your project! -->
-  <script src="../static/assets/demo/demo.js"></script>
-  <script>
-    $(document).ready(function () {
-      $().ready(function () {
-        $sidebar = $('.sidebar');
-        $navbar = $('.navbar');
-        $main_panel = $('.main-panel');
-
-        $full_page = $('.full-page');
-
-        $sidebar_responsive = $('body > .navbar-collapse');
-        sidebar_mini_active = true;
-        white_color = false;
-
-        window_width = $(window).width();
-
-        fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
-
-
-
-        $('.fixed-plugin a').click(function (event) {
-          if ($(this).hasClass('switch-trigger')) {
-            if (event.stopPropagation) {
-              event.stopPropagation();
-            } else if (window.event) {
-              window.event.cancelBubble = true;
-            }
-          }
-        });
-
-        $('.fixed-plugin .background-color span').click(function () {
-          $(this).siblings().removeClass('active');
-          $(this).addClass('active');
-
-          var new_color = $(this).data('color');
-
-          if ($sidebar.length != 0) {
-            $sidebar.attr('data', new_color);
-          }
-
-          if ($main_panel.length != 0) {
-            $main_panel.attr('data', new_color);
-          }
-
-          if ($full_page.length != 0) {
-            $full_page.attr('filter-color', new_color);
-          }
-
-          if ($sidebar_responsive.length != 0) {
-            $sidebar_responsive.attr('data', new_color);
-          }
-        });
-
-        $('.switch-sidebar-mini input').on("switchChange.bootstrapSwitch", function () {
-          var $btn = $(this);
-
-          if (sidebar_mini_active == true) {
-            $('body').removeClass('sidebar-mini');
-            sidebar_mini_active = false;
-            blackDashboard.showSidebarMessage('Sidebar mini deactivated...');
-          } else {
-            $('body').addClass('sidebar-mini');
-            sidebar_mini_active = true;
-            blackDashboard.showSidebarMessage('Sidebar mini activated...');
-          }
-
-          // we simulate the window Resize so the charts will get updated in realtime.
-          var simulateWindowResize = setInterval(function () {
-            window.dispatchEvent(new Event('resize'));
-          }, 180);
-
-          // we stop the simulation of Window Resize after the animations are completed
-          setTimeout(function () {
-            clearInterval(simulateWindowResize);
-          }, 1000);
-        });
-
-        $('.switch-change-color input').on("switchChange.bootstrapSwitch", function () {
-          var $btn = $(this);
-
-          if (white_color == true) {
-
-            $('body').addClass('change-background');
-            setTimeout(function () {
-              $('body').removeClass('change-background');
-              $('body').removeClass('white-content');
-            }, 900);
-            white_color = false;
-          } else {
-
-            $('body').addClass('change-background');
-            setTimeout(function () {
-              $('body').removeClass('change-background');
-              $('body').addClass('white-content');
-            }, 900);
-
-            white_color = true;
-          }
-
-
-        });
-
-        $('.light-badge').click(function () {
-          $('body').addClass('white-content');
-        });
-
-        $('.dark-badge').click(function () {
-          $('body').removeClass('white-content');
-        });
-      });
-    });
-  </script>
-  <script>
-    $(document).ready(function () {
-      // Javascript method's body can be found in assets/js/demos.js
-      demo.initDashboardPageCharts();
-
-    });
-  </script>
-  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
-</body>
-
-</html>
+    {% endfor %}
+{% endblock %}

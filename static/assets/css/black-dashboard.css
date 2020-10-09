@@ -16763,7 +16763,6 @@ hr {
 .table>tbody>tr>td,
 .table>tfoot>tr>td {
   border-color: rgba(255, 255, 255, 0.1);
-  padding: 12px 7px;
   vertical-align: middle;
 }
 
@@ -19845,7 +19844,6 @@ Copyright (c) 2015 Daniel Eden
 .white-content .table>tbody>tr>td,
 .white-content .table>tfoot>tr>td {
   border-color: rgba(34, 42, 66, 0.2);
-  padding: 12px 7px;
   vertical-align: middle;
 }
 

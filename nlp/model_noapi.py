@@ -8,7 +8,7 @@ from transformers import pipeline
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 
 import sys
-sys.path.insert(0, '/Users/ltaing/Documents/SIMPLON DATA IA/IA/DL PROJET/YOUTUBE/scrapping/')
+sys.path.insert(0, '../scrapping/')
 import youtube_noapi
 
 

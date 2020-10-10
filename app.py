@@ -46,9 +46,25 @@ def youtubers():
             youtuberList = db.youtuber_list.find({'ChannelInfo': re.compile(regex, re.IGNORECASE)})
     return render_template('youtuber_list.html',youtuberList=youtuberList)
 
+@app.route('/category', methods=['GET','POST'])
+def category():
+    youtuberList = db.youtuber_list.find(limit=100)
+    if request.method == "POST":
+        #youtuber search
+        youtuberSearch = request.form['categorySearch']
+        if youtuberSearch != "":
+            regex = ".*".join((youtuberSearch, ".*"))
+            youtuberList = db.youtuber_list.find({'ChannelInfo': re.compile(regex, re.IGNORECASE)})
+    return render_template('category.html',youtuberList=youtuberList)
+
 @app.route('/dashboard')
 def page_test():
     return render_template('dashboard.html')
+
+
+@app.route('/nodes')
+def nodes():
+    return render_template('nodes.html')
 
 
 if __name__ == "__main__":

@@ -1,38 +1,70 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <!--Channel List-->
+<div class="row">
+
+  <div class="col-12 mb-3">
+    <form class="form-inline" action="{{ url_for('index') }}" method="POST">
+      <input class="form-control col col-lg-9" type="search" name="channelSearch" placeholder="Search for channels"
+        aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0 col-md-2 ml-auto" type="submit">Search</button>
+    </form>
+  </div>
+</div>
+<!--Channel List-->
+<div class="row">
+  <div class="col-6">
     {% for channel in channelList %}
     <div class="row">
-      <div class="col-5">
-        <div class="card card-chart">
-          <div>
-            <div class="row no-gutters">
-              <div class="col-md-2">
-                <img src="{{channel.url}}" class="card-img" alt="{{channel.title}}">
-              </div>
-              <div class="col-md-3">
-                <div class="card-body">
-                  <h5 class="card-title">{{channel.title}}</h5>
-                  <!-- <p class="card-text">{{channel.description}}</p> -->
+      <div class="col-12 dropright">
+        <div class="dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3">
+                  <img src="{{channel.url}}" class="card-img" alt="{{channel.title}}">
                 </div>
-                <!-- <div class="card-footer">
-                  <div class="row">
-                    <div class="col-md-4">
-                      <p><i class="fas fa-eye"></i>&nbsp;View Count: {{channel.viewcount}}</p>
-                    </div>
-                    <div class="col-md-4">
-                      <p><i class="fas fa-users"></i>&nbsp;Subscriber Count: {{channel.subscribercount}}
-                    </div>
-                    {% if channel.language %}<div class="col-md-4">
-                      <p><i class="fas fa-globe"></i>&nbsp;{{channel.language}}</p>
-                    </div>{% endif %}
-                  </div> -->
+                <div class="col-md-3" data-toggle="tooltip" title="{{channel.description}}">
+                  <h5 class="card-title">{{channel.title}}</h5>
+                  <p class="card-text text-truncate" style="min-width: 300px;">{{channel.description}}</p>
                 </div>
               </div>
             </div>
           </div>
+
         </div>
+
+        <div class="dropdown-menu col-3">
+          <div class="row">
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">View Count :</h5>
+                <p><i class="fas fa-eye"></i>&nbsp; {{channel.viewcount}}</p>
+              </div>
+            </div>
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">Subscriber Count :</h5>
+                <p><i class="fas fa-users"></i>&nbsp; {{channel.subscribercount}}</p>
+              </div>
+            </div>
+            {% if channel.language %}
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">Language :</h5>
+                <p><i class="fas fa-globe"></i>&nbsp;{{channel.language}}</p>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
       </div>
+    </div>
     {% endfor %}
+  </div>
+  <div class="col-6"> Graph goes here</div>
+</div>
+
+
 {% endblock %}

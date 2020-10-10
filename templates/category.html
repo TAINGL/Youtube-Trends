@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
-
+  <div class="row">
+                  
+    <div class="col-12 mb-3">
+      <form class="form-inline" action="{{ url_for('category') }}" method="POST" >
+        <input class="form-control col col-lg-9" type="search" name="categorySearch" placeholder="Search for category" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0 col-md-2 ml-auto" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
         <!--Top Youtuber List-->
         <div class="col-lg-8 col-md-12">
           <div class="card ">

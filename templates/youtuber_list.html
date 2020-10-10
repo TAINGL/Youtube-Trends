@@ -1,63 +1,71 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-        <!--Top Youtuber List-->
-        <div class="col-lg-8 col-md-12">
-          <div class="card ">
-            <div class="card-body">
-              <div class="table-responsive" style="max-height: 800px; overflow: scroll;">
-                <table class="table tablesorter ">
-                  <thead class=" text-primary">
-                    <tr>
-                      <th>
-                        Channel Info
-                      </th>
-                      <th>
-                        Category
-                      </th>
-                      <th>
-                        Subscribers
-                      </th>
-                      <th>
-                        Views
-                      </th>
-                      <th>
-                        Scores
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for youtuber in youtuberList %}
-                    <tr>
-                      <td>
-                        <img src="{{youtuber.Avatar}}" class="avatar-img" alt="{{youtuber.ChannelInfo}}">
-                        {{youtuber.ChannelInfo}}
-                      </td>
-                      <td>
-                        {{youtuber.Category}}
-                      </td>
-                      <td>
-                        {{youtuber.Subscribers}}
-                      </td>
-                      <td>
-                        {{youtuber.Avg.Views}}
-                      </td>
-                      <td>
-                        {{youtuber.NoxScore}}
-                      </td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+  <div class="row">
+                  
+    <div class="col-12 mb-3">
+      <form class="form-inline" action="{{ url_for('youtubers') }}" method="POST" >
+        <input class="form-control col col-lg-9" type="search" name="youtuberSearch" placeholder="Search for Youtuber" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0 col-md-2 ml-auto" type="submit">Search</button>
+      </form>
+    </div>
+  </div>       
+  <!--Top Youtuber List-->
+  <div class="col-lg-8 col-md-12">
+    <div class="card ">
+      <div class="card-body">
+        <div class="table-responsive" style="max-height: 800px; overflow: scroll;">
+          <table class="table tablesorter ">
+            <thead class=" text-primary">
+              <tr>
+                <th>
+                  Channel Info
+                </th>
+                <th>
+                  Category
+                </th>
+                <th>
+                  Subscribers
+                </th>
+                <th>
+                  Views
+                </th>
+                <th>
+                  Scores
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for youtuber in youtuberList %}
+              <tr>
+                <td>
+                  <img src="{{youtuber.Avatar}}" class="avatar-img" alt="{{youtuber.ChannelInfo}}">
+                  {{youtuber.ChannelInfo}}
+                </td>
+                <td>
+                  {{youtuber.Category}}
+                </td>
+                <td>
+                  {{youtuber.Subscribers}}
+                </td>
+                <td>
+                  {{youtuber.Avg.Views}}
+                </td>
+                <td>
+                  {{youtuber.NoxScore}}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
-
       </div>
-
     </div>
   </div>
+
+</div>
+
+</div>
+</div>
 
 {% endblock %}

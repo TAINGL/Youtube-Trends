@@ -76,11 +76,24 @@ class Prediction:
             print("\U0001F61E")
         return df_comments, count_good, count_bad
     
+<<<<<<< HEAD
     def sentiment_analysis_comments(self, videoid, df_comments):
         """
         Labelisation comments & count of good and bad comments
         """
         classifier = pipeline('sentiment-analysis')
+=======
+    if count_good > count_bad:
+        emoji = "\U0001f600"        
+        print(emoji)
+    elif count_good < count_bad:
+        emoji = "\U0001F61E"
+        print(emoji)
+    else:
+        emoji = "\U0001F610"
+        print(emoji)
+    return df_comments, count_good, count_bad, emoji
+>>>>>>> master
 
         comments_list = []
         for row in str(df_comments.values):

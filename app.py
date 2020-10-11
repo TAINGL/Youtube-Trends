@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 from flask import Flask, render_template, request, json
+=======
+import os
+from flask import Flask, render_template, request, jsonify
+>>>>>>> master
 import csv
 from pymongo import MongoClient
 import pymongo
@@ -7,12 +12,19 @@ from bson import BSON
 from bson import json_util
 
 import sys
+<<<<<<< HEAD
 sys.path.insert(0, '../secret/')
 sys.path.insert(0, 'nlp/')
 from secret.config import MongodbConfig
 from model_API import Prediction
 import numpy as np
 import pandas as pd
+=======
+sys.path.insert(0, '../mongodb/')
+from mongodb.config import MongodbConfig
+from nlp.video_summary import caption_text, splitting_text, summarizer_text
+
+>>>>>>> master
 #app initialization
 app = Flask(__name__, template_folder='templates')
 
@@ -229,6 +241,5 @@ def statisticsData():
 
     
 
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')

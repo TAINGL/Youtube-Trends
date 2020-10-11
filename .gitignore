@@ -10,3 +10,5 @@ nlp/.ipynb_checkpoints/youtube-model_2-checkpoint.ipynb
 nlp/.ipynb_checkpoints/youtube-model_3-checkpoint.ipynb
 requirements-l.txt
 requirements-o.txt
+nlp/__pycache__/video_summary.cpython-37.pyc
+mongodb/__pycache__/config.cpython-37.pyc

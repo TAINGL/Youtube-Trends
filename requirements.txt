@@ -9,6 +9,7 @@ click==7.1.2
 cryptography==3.1.1
 cssselect==1.1.0
 cycler==0.10.0
+dnspython==2.0.0
 docker==4.3.1
 dominate==2.5.2
 emoji==0.6.0

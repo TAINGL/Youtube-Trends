@@ -1,6 +1,5 @@
 from pytube import YouTube
 from transformers import pipeline
-from transformers import pipeline
 
 
 # Caption text YOUTUBE VIDEO
@@ -69,12 +68,14 @@ def translator_text(summary_list):
         #print(translate)
     return translate
 
-title, img_url, result = caption_text("https://www.youtube.com/watch?v=yYlztmMDJNE")
+#title, img_url, result = caption_text("https://www.youtube.com/watch?v=yYlztmMDJNE")
 #("https://www.youtube.com/watch?v=xEGFcisC4c0")
-splitting_text_list = splitting_text(result, 200)
-summary_list = summarizer_text(splitting_text_list)
-translate = translator_text(summary_list)
-print(translate)
+#splitting_text_list = splitting_text(result, 200)
+#summary_list = summarizer_text(splitting_text_list)
+#print(summary_list)
+
+#translate = translator_text(summary_list)
+#print(translate)
 #print(len(translate))
 #summarize = summarizer(result) 
 #translator(summarize)

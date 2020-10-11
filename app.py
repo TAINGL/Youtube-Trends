@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request, jsonify
 import csv
 from pymongo import MongoClient
@@ -6,9 +7,9 @@ from bson.json_util import dumps
 import re
 
 import sys
-sys.path.insert(0, '../secret/')
-from secret.config import MongodbConfig
-from nlp.video_summary import caption_text, splitting_text, summarizer_text, translator_text
+sys.path.insert(0, '../mongodb/')
+from mongodb.config import MongodbConfig
+from nlp.video_summary import caption_text, splitting_text, summarizer_text
 
 #app initialization
 app = Flask(__name__, template_folder='templates')
@@ -51,24 +52,5 @@ def youtubers():
 def page_test():
     return render_template('dashboard.html')
 
-################################# TEST DOCKER
-@app.route('/test_docker', methods=['GET'])
-def test_mongo():
-    if request.method == 'GET':
-        query = request.args
-        data = db.youtuber_list.find_one(query)
-        return jsonify(data), 200
-
-
-@app.route('/test_model', methods=['GET'])
-def test_model(link):
-    title, img_url, result = caption_text(link) #"https://www.youtube.com/watch?v=yYlztmMDJNE"
-    print(title, img_url)
-    splitting_text_list = splitting_text(result, 200)
-    summary_list = summarizer_text(splitting_text_list)
-    translate = translator_text(summary_list)
-    data = {k: v for v, k in enumerate(translate)}
-    return jsonify(data), 200
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')

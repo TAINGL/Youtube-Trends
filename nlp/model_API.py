@@ -68,10 +68,15 @@ def sentiment_analysis(videoid):
     print(count_good, count_bad)
     
     if count_good > count_bad:
-        print("\U0001f600")
+        emoji = "\U0001f600"        
+        print(emoji)
+    elif count_good < count_bad:
+        emoji = "\U0001F61E"
+        print(emoji)
     else:
-        print("\U0001F61E")
-    return df_comments, count_good, count_bad
+        emoji = "\U0001F610"
+        print(emoji)
+    return df_comments, count_good, count_bad, emoji
 
 
 def show_word_cloud(cloud, title):

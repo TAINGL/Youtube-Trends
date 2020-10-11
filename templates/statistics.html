@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="col-lg-12"></div>
+  <h3>Statistics</h3>
+  <hr/>
+  <div class="row mb-3">
+
+  <div class="row col-12">
+    <div class="col-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Number of youtuber by category</h5>
+          <hr/>
+        </div>
+        <div class="card-body">
+          <canvas id="categortChart"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Number of youtuber by Subcribers</h5>
+          <hr/>
+        </div>
+        <div class="card-body">
+          <canvas id="subscriberChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row col-12">
+    <div class="col-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Word Cloud</h5>
+          <hr/>
+        </div>
+        <div class="card-body">
+          <img id="polarityImg" src="/static/assets/img/wordcloud.png" alt="polarity image"/>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Number of youtuber by Views</h5>
+          <hr/>
+        </div>
+        <div class="card-body">
+          <canvas id="viewcountChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+<script>
+
+  $(document).ready(function () {
+
+    // GET is the default method, so we don't need to set it
+    fetch('statistics-data')
+      .then(function (response) {
+        return response.text();
+      }).then(function (result) {
+        data = JSON.parse(result)
+        console.log(data)
+
+        //categort chart
+        var ctx = document.getElementById('categortChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: data.categoryName,
+            datasets: [{
+              label: 'Number of youtuber by category',
+              data: data.categoryCount,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.6)',
+                'rgba(255, 255, 132, 0.6)',
+                'rgba(255, 99, 255, 0.5)',
+                'rgba(62, 21, 116, 0.6)',
+                'rgba(54, 162, 255, 0.5)',
+                'rgba(54, 162, 235, 0.6)',
+                'rgba(141, 8, 136, 0.5)',
+                'rgba(75, 255, 192, 0.5)',
+                'rgba(75, 192, 255, 0.5)',
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(47, 108, 245, 0.5)',
+                'rgba(245, 47, 47, 0.5)',
+                'rgba(245, 158, 47, 0.6)',
+                'rgba(17, 171, 37, 0.5)',
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            legend: {
+              display: false
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  display: false
+                },
+                gridLines: {
+                  display: false
+                }
+              }],
+              xAxes: [{
+                ticks: {
+                  display: false
+                },
+                gridLines: {
+                  display: false
+                }
+              }]
+            }
+          }
+        });
+
+        //subscriber Chart
+        var ctx2 = document.getElementById('subscriberChart').getContext('2d');
+        var myChart = new Chart(ctx2, {
+          type: 'line',
+          data: {
+            labels: data.channelInfo,
+            datasets: [{
+              label: 'Number of Subscribers',
+              data: data.subscribercount,
+              backgroundColor: 'rgba(255, 206, 86, 0.6)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            legend: {
+              display: false
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  display: false
+                },
+                gridLines: {
+                  display: false
+                }
+              }],
+              xAxes: [{
+                ticks: {
+                  display: false
+                },
+                gridLines: {
+                  display: false
+                }
+              }]
+            }
+          }
+        });
+
+        //subscriber Chart
+        var ctx2 = document.getElementById('viewcountChart').getContext('2d');
+        var myChart = new Chart(ctx2, {
+          type: 'line',
+          data: {
+            labels: data.channelInfo,
+            datasets: [{
+              label: 'Number of Views',
+              data: data.viewcount,
+              backgroundColor: 'rgba(255, 206, 86, 0.6)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            legend: {
+              display: false
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  display: false
+                },
+                gridLines: {
+                  display: false
+                }
+              }],
+              xAxes: [{
+                ticks: {
+                  display: false
+                },
+                gridLines: {
+                  display: false
+                }
+              }]
+            }
+          }
+        });
+
+      });
+
+  });
+</script>
+
+{% endblock %}

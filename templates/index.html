@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row">
+<div class="row ml-3">
+  <h3>Channels</h3>
+  <hr/>
 
   <div class="col-12 mb-3">
     <form class="form-inline" action="{{ url_for('index') }}" method="POST">
@@ -24,7 +26,7 @@
                 <div class="col-md-3">
                   <img src="{{channel.url}}" class="card-img" alt="{{channel.title}}">
                 </div>
-                <div class="col-md-3" data-toggle="tooltip" title="{{channel.description}}">
+                <div class="col-md-3" title="{{channel.description}}">
                   <h5 class="card-title">{{channel.title}}</h5>
                   <p class="card-text text-truncate" style="min-width: 300px;">{{channel.description}}</p>
                 </div>
@@ -56,6 +58,7 @@
               </div>
             </div>
             {% endif %}
+            <a href="/channel-details?channelId={{channel.channelid}}" class="btn">View More</a>
           </div>
         </div>
 
@@ -63,8 +66,92 @@
     </div>
     {% endfor %}
   </div>
-  <div class="col-6"> Graph goes here</div>
+  <div class="col-6" >
+
+    <canvas id="myChart" height="400"></canvas>
+
+  </div>
 </div>
 
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+
+  $(document).ready(function () {
+
+    // GET is the default method, so we don't need to set it
+    fetch('/channelData')
+      .then(function (response) {
+        return response.text();
+      }).then(function (result) {
+        data = JSON.parse(result)
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+          type: 'horizontalBar',
+          data: {
+            labels: data.labels,
+            datasets: [{
+              label: '# of Viewcount',
+              data: data.viewcount,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            legend: {
+              display: false
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  mirror: true
+                }
+              }],
+              xAxes: [{
+                ticks: {
+                  display: false
+                }
+              }]
+            }
+          }
+        });
+
+      });
+
+
+
+  });
+</script>
 
 {% endblock %}

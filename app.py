@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request
+import os
+from flask import Flask, render_template, request, jsonify
 import csv
 from pymongo import MongoClient
 import pymongo
@@ -6,8 +7,9 @@ from bson.json_util import dumps
 import re
 
 import sys
-sys.path.insert(0, '../secret/')
-from secret.config import MongodbConfig
+sys.path.insert(0, '../mongodb/')
+from mongodb.config import MongodbConfig
+from nlp.video_summary import caption_text, splitting_text, summarizer_text
 
 #app initialization
 app = Flask(__name__, template_folder='templates')
@@ -50,6 +52,5 @@ def youtubers():
 def page_test():
     return render_template('dashboard.html')
 
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')

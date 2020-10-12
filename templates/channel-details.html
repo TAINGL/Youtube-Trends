@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for channel in channelList %}
+<div class="row ml-3">
+  <h1>{{channel.title}}</h1>
+</div>
+<div class="row mb-3">
+
+  <div class="card-deck col-12">
+    <div class="card col-10">
+      <div class="card-body">
+        <h5 class="card-title">Description :</h5>
+        <p class="card-text">{{channel.description}}</p>
+      </div>
+    </div>
+    <div class="card col-2">
+      <div class="card-body">
+        <p><i class="fas fa-eye"></i>&nbsp; {{channel.viewcount}}</p>
+        <p><i class="fas fa-users"></i>&nbsp; {{channel.subscribercount}}</p>
+        {% if channel.language %}
+        <p><i class="fas fa-globe"></i>&nbsp;{{channel.language}}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endfor %}
+
+<!-- Charts -->
+<div class="row mb-3">
+
+  <div class="col-8">
+    <canvas id="viewcountChart"></canvas>
+  </div>
+
+  <div class="col-4">
+    <canvas id="likecountChart"></canvas>
+    <canvas id="dislikecountChart"></canvas>
+  </div>
+</div>
+
+<div class="row">
+  <div class="card-columns">
+    {% for video in videoData %}
+    <div class="card">
+      <a href="/video-comments?videoId={{video.videoid}}">
+        <img src="{{video.videothumbnails}}" class="card-img-top" alt="{{video.video_title}}">
+      </a>
+      <div class="card-body">
+        <h5 class="card-title"><strong>{{video.video_title}}</strong></h5>
+        <p class="card-text">{{video.video_description}}</p>
+        <div class="row">
+          <p><i class="fas fa-eye col-4"></i>&nbsp; {{video.videoviewcount}}</p>
+          <p><i class="fas fa-thumbs-up col-4"></i>&nbsp; {{video.videolikeCount}}</p>
+          <p><i class="fas fa-thumbs-down col-4"></i>&nbsp; {{video.videodislikecount}}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+
+  $(document).ready(function () {
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const channelId = urlParams.get('channelId');
+
+    // GET is the default method, so we don't need to set it
+    fetch('/videoData?channelId=' + channelId)
+      .then(function (response) {
+        return response.text();
+      }).then(function (result) {
+        data = JSON.parse(result)
+        console.log(data)
+
+        var ctx = document.getElementById('viewcountChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: data.labels,
+            datasets: [{
+              label: 'Number of Viewcount',
+              data: data.viewcount,
+              backgroundColor: '#2d6cf5',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            legend: {
+              display: true
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  display: false
+                }
+              }],
+              xAxes: [{
+                ticks: {
+                  display: false
+                }
+              }]
+            }
+          }
+        });
+
+        //video like chart
+        var ctx2 = document.getElementById('likecountChart').getContext('2d');
+        var myChart = new Chart(ctx2, {
+          type: 'bar',
+          data: {
+            labels: data.labels,
+            datasets: [{
+              label: 'Number of likes',
+              data: data.likecount,
+              backgroundColor: 'green',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            legend: {
+              display: true
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  display: false
+                }
+              }],
+              xAxes: [{
+                ticks: {
+                  display: false
+                }
+              }]
+            }
+          }
+        });
+
+        //video dislike chart
+        var ctx3 = document.getElementById('dislikecountChart').getContext('2d');
+        var myChart = new Chart(ctx3, {
+          type: 'bar',
+          data: {
+            labels: data.labels,
+            datasets: [{
+              label: 'Number of dislikes',
+              data: data.likecount,
+              backgroundColor: 'red',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            legend: {
+              display: true
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  display: false
+                }
+              }],
+              xAxes: [{
+                ticks: {
+                  display: false
+                }
+              }]
+            }
+          }
+        });
+
+
+      });
+
+
+
+  });
+</script>
+
+{% endblock %}

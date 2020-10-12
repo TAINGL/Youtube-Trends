@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row ml-3">
+  <h1>Youtuber Video Comments</h1>
+  <div class="row mb-3">
+    <div class="card-deck col-12">
+      <div class="card col-6" id="viewcountId">
+        <div class="card-header">
+          Polarity
+        </div>
+        <div class="card-body">
+          <canvas id="sentimentChart"></canvas>
+        </div>
+      </div>
+      <div class="card col-6">
+        <div class="card-body">
+          <img id="polarityImg" src="/static/assets/img/thinking.gif" alt="polarity image"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="card-columns">
+      {% for comment in videoComments %}
+      <div class="card" style="width: 350px;">
+        <a href="{{comment.authorprofileimageurl}}">
+          <img src="{{comment.authorprofileimageurl}}" alt="{{comment.authordisplayname}}">
+        </a>
+        <div class="card-body">
+          <h5 class="card-title"><strong>{{comment.authordisplayname}}</strong></h5>
+          <p class="card-text">{{comment.textdisplay}}</p>
+          <div class="row">
+            <p><i class="fas fa-thumbs-up col-4"></i>&nbsp; {{comment.likecount}}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+<script>
+
+  $(document).ready(function () {
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const videoId = urlParams.get('videoId');
+
+    // GET is the default method, so we don't need to set it
+    fetch('/comments-sentiments?videoId=' + videoId)
+      .then(function (response) {
+        return response.text();
+      }).then(function (result) {
+        data = JSON.parse(result)
+
+        console.log(data.positive)
+        if(data.positive == true){
+          $('#polarityImg').attr('src', "/static/assets/img/positive.gif");
+        }else{
+          $('#polarityImg').attr('src', "/static/assets/img/negative.gif");
+        }
+
+        var ctx = document.getElementById('sentimentChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+          type: 'horizontalBar',
+          data: {
+            labels: data.title,
+            datasets: [{
+              label: 'Polarity Graph',
+              data: data.sentiment,
+              backgroundColor: [
+                'rgba(75, 192, 192, 0.6)',
+                'rgba(255, 99, 132, 0.6)'
+              ],
+
+              borderWidth: 1
+            }]
+          },
+          options: {
+            legend: {
+              display: true
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  display: true
+                }
+              }],
+              xAxes: [{
+                ticks: {
+                  display: false
+                }
+              }]
+            }
+          }
+        });
+
+      });
+  });
+</script>
+
+{% endblock %}

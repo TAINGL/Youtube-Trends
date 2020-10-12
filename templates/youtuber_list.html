@@ -2,62 +2,90 @@
 
 {% block content %}
 
-        <!--Top Youtuber List-->
-        <div class="col-lg-8 col-md-12">
-          <div class="card ">
-            <div class="card-body">
-              <div class="table-responsive" style="max-height: 800px; overflow: scroll;">
-                <table class="table tablesorter ">
-                  <thead class=" text-primary">
-                    <tr>
-                      <th>
-                        Channel Info
-                      </th>
-                      <th>
-                        Category
-                      </th>
-                      <th>
-                        Subscribers
-                      </th>
-                      <th>
-                        Views
-                      </th>
-                      <th>
-                        Scores
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for youtuber in youtuberList %}
-                    <tr>
-                      <td>
-                        <img src="{{youtuber.Avatar}}" class="avatar-img" alt="{{youtuber.ChannelInfo}}">
-                        {{youtuber.ChannelInfo}}
-                      </td>
-                      <td>
-                        {{youtuber.Category}}
-                      </td>
-                      <td>
-                        {{youtuber.Subscribers}}
-                      </td>
-                      <td>
-                        {{youtuber.Avg.Views}}
-                      </td>
-                      <td>
-                        {{youtuber.NoxScore}}
-                      </td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
+<!--Search-->
+<!-- <div class="row ml-3">
+                  
+    <div class="col-12 mb-3">
+      <form class="form-inline" action="{{ url_for('youtubers') }}" method="POST" >
+        <input class="form-control col col-lg-9" type="search" name="youtuberSearch" placeholder="Search for Youtuber" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0 col-md-2 ml-auto" type="submit">Search</button>
+      </form>
+    </div>
+  </div> -->
 
-      </div>
+<!--Top Youtuber List-->
+<div class="col-lg-12">
+  <h3>Top 1000 YouTubers</h3>
+  <hr/>
 
+  <div class="card">
+    <div class="card-body">
+      <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0">
+        <thead>
+          <tr>
+            <th>
+              Channel Info
+            </th>
+            <th>
+              Category
+            </th>
+            <th>
+              Subscribers
+            </th>
+            <th>
+              Views
+            </th>
+            <th>
+              Scores
+            </th>  
+          </tr>
+        </thead>
+        <tbody>
+          {% for youtuber in youtuberList %}
+          {% if youtuber.ChannelInfo.strip() != '' %}
+          <tr>
+            <td>
+              <img src="{{youtuber.Avatar}}" class="avatar-img" alt="{{youtuber.ChannelInfo}}">
+              &nbsp;<a href="/channel-features?channelId={{youtuber.Channelid}}">{{youtuber.ChannelInfo}}</a>
+            </td>
+            <td>
+              {{youtuber.Category}}
+            </td>
+            <td>
+              {{youtuber.Subscribers}}
+            </td>
+            <td>
+              {{youtuber.Avg.Views}}
+            </td>
+            <td>
+              {{youtuber.NoxScore}}
+            </td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+
+  //https://mdbootstrap.com/docs/jquery/tables/datatables/
+  $(document).ready(function () {
+    $('#dtBasicExample').DataTable();
+    $('.dataTables_length').addClass('bs-select');
+  });
+
+</script>
 
 {% endblock %}

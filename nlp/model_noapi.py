@@ -8,11 +8,11 @@ from transformers import pipeline
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 
 import sys
-sys.path.insert(0, '../scrapping/')
+
 import youtube_noapi
+pd.options.mode.chained_assignment = None
 
-
-class Predictions:
+class Predictions_noapi:
     def __init__(self, link):
         self.link = link
 
@@ -24,13 +24,12 @@ class Predictions:
         df = pd.DataFrame(comment_lists, columns =['comments']) 
         return df, comment_lists
 
-
     def sentiment_analysis(self,link):
         """
         Labelisation comments & count of goob and bad comments
         """
         classifier = pipeline('sentiment-analysis')
-        df, comment_lists = video_comments(self,link)
+        df, comment_lists = self.video_comments(link)
         df["label"] = 0
         for i in range(df.shape[0]):
             if classifier(comment_lists[i])[0]["label"] == 'POSITIVE':
@@ -48,7 +47,6 @@ class Predictions:
         else:
             print("\U0001F61E")
         return df, count_good, count_bad
-
 
     def show_word_cloud(self, cloud, title):
         """

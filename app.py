@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, json
+from flask import Flask, render_template, request, json, jsonify
 import os
 import csv
 from pymongo import MongoClient
@@ -11,9 +11,10 @@ import sys
 sys.path.insert(0, '../secret/')
 sys.path.insert(0, '../mongodb/')
 sys.path.insert(0, 'nlp/')
+sys.path.insert(0, '../Scrapping/')
 from secret.config import MongodbConfig
 from model_API import Prediction
-from model_noapi import Predictions
+from model_noapi import Predictions_noapi
 import numpy as np
 import pandas as pd
 from mongodb.config import MongodbConfig
@@ -31,7 +32,7 @@ URI = MongodbConfig("atlas")
 client = pymongo.MongoClient(URI)
 db = client.get_database('youtube_trends')
 wc = Prediction("text")
-noapi = Predictions("link")
+noapi = Predictions_noapi("link")
 
 # main index page route
 @app.route('/', methods=['GET','POST'])
@@ -196,27 +197,52 @@ def videoCommentsSentiment():
 def statistics():
     return render_template('statistics.html')
 
-@app.route('/comments-sentiments-noapi', methods=['GET'])
-def videoCommentsSentiment_noapi():
-    link = request.args.get('link')
 
-    sentiments = noapi.sentiment_analysis_comments(link)
 
-    title = ['POSITIVE','NEGATIVE']
-    sentiment = []
-    sentiment.append(sentiments[1])
-    sentiment.append(sentiments[2])
 
-    positive = sentiments[1] > sentiments[2]
+@app.route('/sentiments', methods=['GET','POST'])
+def Sentiment_noapi():
+    
+    # if request.method == "POST":
+    #     #youtube search
+    #     youtubeSearch = request.form['youtubeSearch']
+    #     if youtubeSearch != "":
+    #         ysentiments = noapi.sentiment_analysis(youtubeSearch)
+    #         sentiment_noapi=[]
+    #         sentiment_noapi.append(ysentiments[1])
+    #         sentiment_noapi.append(ysentiments[2])
+    #         positive = ysentiments[1] > ysentiments[2]
+    #         sentiment_result = {
+    #             'title': ['POSITIVE','NEGATIVE'],
+    #             'sentiment_noapi': sentiment_noapi,
+    #             'positive' : positive
+    #         }
+    #         print(sentiment_result)
+    #         return render_template('sentiments.html')
 
-    result = {
-        'title': title,
-        'sentiment': sentiment,
-        'positive' : positive
+    return render_template('sentiments.html')
+
+@app.route('/sentiments-data', methods=['GET'])
+def sentimentsData():
+    youtubeSearch = request.args.get('youtubeSearch')
+    sentiment_result = {
+        'title': ['POSITIVE','NEGATIVE'],
+        'sentiment_noapi': [0,0],
+        'positive' : 'false'
     }
+    if youtubeSearch != "":
+        ysentiments = noapi.sentiment_analysis(youtubeSearch)
+        sentiment_noapi=[]
+        sentiment_noapi.append(ysentiments[1])
+        sentiment_noapi.append(ysentiments[2])
+        positive = ysentiments[1] > ysentiments[2]
+        sentiment_result = {
+            'title': ['POSITIVE','NEGATIVE'],
+            'sentiment_noapi': sentiment_noapi,
+            'positive' : positive
+        }
 
-    return json.dumps(result, default=json_util.default)
-
+    return json.dumps(sentiment_result, default=json_util.default)
 
 @app.route('/statistics-data', methods=['GET','POST'])
 def statisticsData():
@@ -256,9 +282,6 @@ def statisticsData():
     }
 
     return json.dumps(result, default=json_util.default)
-
-    
-
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')

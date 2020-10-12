@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="col-12 mb-3">
+  <form class="form-inline" action="{{ url_for('Sentiment_noapi') }}" method="GET">
+    <input class="form-control col col-lg-9" type="search" name="youtubeSearch" placeholder="Enter Youtube Link"
+      aria-label="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0 col-md-2 ml-auto" type="submit">Search</button>
+  </form>
+</div>
+<div class="row mb-3">
+  <div class="card-deck col-12">
+    <div class="card col-6" id="viewcountId">
+      <div class="card-header">
+        Polarity
+      </div>
+      <div class="card-body">
+        <canvas id="noapisentimentChart"></canvas>
+      </div>
+    </div>
+    <div class="card col-6">
+      <div class="card-body">
+        <img id="polarityImage" src="/static/assets/img/thinking.gif" alt="polarity image" />
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+
+  $(document).ready(function () {
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const youtubeSearch = urlParams.get('youtubeSearch');
+
+    // GET is the default method, so we don't need to set it
+    fetch('/sentiments-data?youtubeSearch=' + youtubeSearch)
+      .then(function (response) {
+        console.log(response)
+        return response.text();
+        
+      }).then(function (result) {
+        data = JSON.parse(result)
+        console.log(data)
+
+        if (data.positive == true) {
+          $('#polarityImage').attr('src', "/static/assets/img/positive.gif");
+        } else {
+          $('#polarityImage').attr('src', "/static/assets/img/negative.gif");
+        }
+
+        var ctx = document.getElementById('noapisentimentChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+          type: 'horizontalBar',
+          data: {
+            labels: data.title,
+            datasets: [{
+              label: 'Polarity Graph',
+              data: data.sentiment_noapi,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            legend: {
+              display: false
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  mirror: true
+                }
+              }],
+              xAxes: [{
+                ticks: {
+                  display: false
+                }
+              }]
+            }
+          }
+        });
+
+      });
+
+
+
+  });
+</script>
+
+{% endblock %}

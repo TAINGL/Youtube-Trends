@@ -155,8 +155,8 @@ More informations: https://docs.mongodb.com/guides/server/drivers/
 Use Cypher’s commands to create the nodes
 Cypher is Neo4j’s graph query language that allows users to store and retrieve data from the graph database.
 
-
-<p align="center"><img width=100% src="https://github.com/TAINGL/Youtube-Trends/tree/feature/app/helpers/neo4j-Browser.png"></p>
+<img src="https://github.com/TAINGL/Youtube-Trends/tree/feature/app/helpers/neo4j-Browser.png"/>
+<p align="center"><img width=100% src="https://github.com/Nohossat/exploradome_tangram/blob/numpy---team-4/data/imgs/logo.jpg"></p>
 
 
 To enter and run Cypher statements: Click on Open Neo4j Browser, type statements into input box at top, and execute with the play button on the right.

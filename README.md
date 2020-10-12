@@ -3,6 +3,8 @@ If you are a marketing Professional and you want to do a collaboration with an i
 
 The objective of this app is to help and guide you with a choice.  You will get the possibility to review the statistics of each youtuber's channel and be able to recommend another as per the categories or featured channels of the latter.
 
+<img width=100%  src="https://github.com/TAINGL/Youtube-Trends/blob/feature/app/helpers/application.png"/>
+
 ## 1. Collecting YouTube Data
 For this project, youtube api was used to get the required data that will be stored in a mongo database.  For the models, hugging face will be used, and a Flask application will be deployed to be able to access the recommendation system.
 
@@ -120,7 +122,7 @@ For the application, you need to get the connection string URI: https://docs.mon
 - if you used MongoDB on local, your URI is like this: "mongodb://localhost:27017/[db_name]"
 - if you used MongoDB Atlas, your URI is like this: mongodb+srv://[username]:[password]@[projectname]-gktww.gcp.mongodb.net/[authDB]
 
-Use the config.py file to configure your URI settings. Do not forget to fill in the import:
+Use the config.py file to configure your URI settings (inside mongodb folder). Do not forget to fill in the import:
 ```python
 # Here I placed the file in a folder named "secret" 
 import sys

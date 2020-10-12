@@ -132,21 +132,26 @@ More informations: https://docs.mongodb.com/guides/server/drivers/
 
 ## 4. Creating graph database with Neo4j
 ### Working with Neo4j Desktop
-**Download link(https://neo4j.com/download-neo4j-now/?utm_source=google&utm_medium=cpc&utm_campaign=eu-search-branded&utm_adgroup=neo4j-desktop&gclid=CjwKCAjw_Y_8BRBiEiwA5MCBJiaxGCM8xIJDjxedgI_QvvhsovEjW3-UJwrSfuBkVgeUvH8vQ3NQYBoCgTAQAvD_BwE)**
+**[Download link](https://neo4j.com/download-neo4j-now/?utm_source=google&utm_medium=cpc&utm_campaign=eu-search-branded&utm_adgroup=neo4j-desktop&gclid=CjwKCAjw_Y_8BRBiEiwA5MCBJiaxGCM8xIJDjxedgI_QvvhsovEjW3-UJwrSfuBkVgeUvH8vQ3NQYBoCgTAQAvD_BwE)**
+
 **Creating a database**
     - Click on the section that says Add Database: You should see two buttons appear for creating a local database or connecting to a remote dbms.
     - Choose the Create a Local Database and fill in details on the entry form for your database. For the dropdown field, you can leave whatever version is defaulted. Once that is complete, click Create.
     - Start your database by clicking the Start button on it.
+
 **Importing CSV Data** : 
     <img src="data/helpers/neo4j_manage.PNG">
     - Click on Manage
     - In the Manage panel, you should see the button for Open Folder in the upper panel. Right next to that button is a dropdown arrow button. If you click that, you will see a menu of options for different folders.
     - Choose the Import folder. This will open up another Finder window.
     - Put the csv files in the folder
+
 **Translate the data into nodes and relationships**
 Use Cypher’s commands to create the nodes
 Cypher is Neo4j’s graph query language that allows users to store and retrieve data from the graph database.
+
 <img src="data/helpers/neo4j-Browser.PNG">
+
 To enter and run Cypher statements: Click on Open Neo4j Browser, type statements into input box at top, and execute with the play button on the right.
 Example of Statement to create nodes from the data found in the youtuber_list_20201006 csv:
 ```python
@@ -157,21 +162,23 @@ MERGE (e:Channel {Channelid: youtubelist.Channelid, ChannelInfo: youtubelist.Cha
 
 Example of Statement to create relationship between nodes:
 ```python
-// 
+
+// Upload the CSV file on neo4j with specific content as nodes 'featureChannel'
+// Verify that feature channels ids is not null
 LOAD CSV WITH HEADERS FROM 'file:///featured_channels.csv' AS featureChannel
 WITH featureChannel.youtuberchannelid AS Channelid, featureChannel.featuredChannelsUrls AS FeaturedChannelsUrls
 WHERE FeaturedChannelsUrls IS NOT NULL
 MERGE (f:FeatureChannel {Channelid:Channelid,FeaturedChannelsUrls:FeaturedChannelsUrls})
 
-// 
+// Upload the CSV file on neo4j with specific content as nodes 'featureData'
 LOAD CSV WITH HEADERS FROM 'file:///featured_channels_info.csv' AS featureData
 MERGE (f:FeatureData {Channelid:  featureData.featurechannelid, Title: featureData.title})
 
-// 
+// Select channelid from 'featureChannel' node and match it with the channelid of 'featureData'
 MATCH (e:Channel { Channelid: e.Channelid })
 MATCH (f:FeatureChannel { Channelid: e.Channelid })
 MATCH (d:FeatureData { Channelid: f.FeaturedChannelsUrls })
-// 
+// Establish the relationship
 MERGE (e)-[r:KNOWS]->(f)-[h:HAVE]->(d)
 RETURN e.ChannelInfo, type(r), f.FeaturedChannelsUrls, type(h), d.Title
 ```

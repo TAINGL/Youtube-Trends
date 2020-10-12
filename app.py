@@ -15,7 +15,6 @@ from secret.config import MongodbConfig
 from model_API import Prediction
 import numpy as np
 import pandas as pd
-
 from mongodb.config import MongodbConfig
 from nlp.video_summary import caption_text, splitting_text, summarizer_text
 
@@ -160,9 +159,10 @@ def featureData():
 @app.route('/video-comments', methods=['GET','POST'])
 def videoComments():
     videoId = request.args.get('videoId')
+    videoData = db.video_data.find({'videoid': videoId})
     videoComments = db.video_comment.find({'videoid': videoId})
 
-    return render_template('video-comments.html',videoComments=videoComments)
+    return render_template('video-comments.html',videoComments=videoComments, videoData=videoData)
 
 @app.route('/comments-sentiments', methods=['GET'])
 def videoCommentsSentiment():
@@ -199,7 +199,7 @@ def statistics():
 def statisticsData():
 
     df_youtuber = pd.DataFrame(db.youtuber_list.find(),columns=['ChannelInfo', 'Category','Subscribers', 'Avg', 'NoxScore'])
-    
+    #viewList = db.youtuber_list.find()
     cat = df_youtuber.groupby(['Category']).size().reset_index(name='Count')
     categoryCount = cat['Count'].tolist()
     catList = cat['Category'].str.strip().tolist()
@@ -207,19 +207,20 @@ def statisticsData():
     
     channelInfo = df_youtuber['ChannelInfo'].str.strip().tolist()
     subscribercount = df_youtuber['Subscribers'].tolist()
-    avg = df_youtuber['Avg']
+    #avg = df_youtuber['Avg']
+    viewcountList = []
+    for view in df_youtuber['Avg']:
+        viewcountList.append(view['Views'])
 
-    print(avg.tolist())
     # viewcountList = df_youtuber['Avg'].tolist()
-    # viewcountList = [word.replace('719.8%','') for word in viewcountList]
-    # viewcountList = [word.replace('↑','').strip() for word in viewcountList]
-    # viewcountList = [word.replace('-','0').strip() for word in viewcountList]
+    viewcountList = [word.replace('719.8%','') for word in viewcountList]
+    viewcountList = [word.replace('↑','').strip() for word in viewcountList]
+    viewcountList = [word.replace('-','0').strip() for word in viewcountList]
 
     tbl = {'K':1, 'M':1_000, 'B':1_000_000}
     subscribercount = [int(i) for i in (re.sub(r'([\d\.]+)(K|M|B)', lambda v: str(int(float(v.groups()[0]) * tbl[v.groups()[1]])), i) for i in df_youtuber['Subscribers'])]
 
-    # viewcount = [int(i) for i in (re.sub(r'([\d\.]+)(K|M|B)', lambda v: str(int(float(v.groups()[0]) * tbl[v.groups()[1]])), i) for i in viewcountList)]
-    viewcount = []
+    viewcount = [int(i) for i in (re.sub(r'([\d\.]+)(K|M|B)', lambda v: str(int(float(v.groups()[0]) * tbl[v.groups()[1]])), i) for i in viewcountList)]
     score = []
 
     result = {
@@ -235,5 +236,6 @@ def statisticsData():
 
     
 
+
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True)

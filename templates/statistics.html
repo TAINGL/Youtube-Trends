@@ -34,22 +34,22 @@
     <div class="col-6">
       <div class="card">
         <div class="card-header">
-          <h5 class="card-title">Word Cloud</h5>
+          <h5 class="card-title">Number of youtuber by Views</h5>
           <hr/>
         </div>
         <div class="card-body">
-          <img id="polarityImg" src="/static/assets/img/wordcloud.png" alt="polarity image"/>
+          <canvas id="viewcountChart"></canvas>
         </div>
       </div>
     </div>
     <div class="col-6">
       <div class="card">
         <div class="card-header">
-          <h5 class="card-title">Number of youtuber by Views</h5>
+          <h5 class="card-title">Word Cloud</h5>
           <hr/>
         </div>
         <div class="card-body">
-          <canvas id="viewcountChart"></canvas>
+          <img id="polarityImg" src="/static/assets/img/wordcloud.png" alt="polarity image"/>
         </div>
       </div>
     </div>
@@ -173,7 +173,7 @@
             datasets: [{
               label: 'Number of Views',
               data: data.viewcount,
-              backgroundColor: 'rgba(255, 206, 86, 0.6)',
+              backgroundColor: 'rgba(62, 21, 116)',
               borderWidth: 1
             }]
           },

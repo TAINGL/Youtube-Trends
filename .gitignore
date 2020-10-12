@@ -8,6 +8,7 @@ scrapping/client_secret.json
 nlp/.ipynb_checkpoints/youtube-model_1-checkpoint.ipynb
 nlp/.ipynb_checkpoints/youtube-model_2-checkpoint.ipynb
 nlp/.ipynb_checkpoints/youtube-model_3-checkpoint.ipynb
+nlp/__pycache__/model_API.cpython-37.pyc
 requirements-l.txt
 requirements-o.txt
 nlp/__pycache__/video_summary.cpython-37.pyc

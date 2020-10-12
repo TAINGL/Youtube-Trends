@@ -134,9 +134,33 @@ More informations: https://docs.mongodb.com/guides/server/drivers/
 
 
 ## 5. Run Application
- 
+### 5.1 On Local 
+
  ```python
 export FLASK_APP=hello.py
 flask run
 # * Running on http://127.0.0.1:5000/
  ```
+### 5.2 With Docker
+
+From Docker-Compose
+```cmd
+docker-compose up
+docker-compose down
+```
+
+From Dockerfile
+```cmd
+docker build -t <name_img>
+docker images
+docker run <name_img or image_id>
+docker stop <name_img or image_id>
+```
+
+From Docker Hub: https://hub.docker.com/repository/docker/taing/youtube_app
+```cmd
+docker pull taing/youtube_app:<last_tag>
+docker images
+docker run -p 5000:5000 <ImageID>
+```
+Running on http://0.0.0.0:5000/

@@ -1,0 +1,10 @@
+.md*
+.git*
+data/
+mongodb/db.py
+nlp/youtube-model_1.ipynb
+nlp/youtube-model_2.ipynb
+nlp/youtube-model_3.ipynb
+nlp/.ipynb_checkpoints
+scrapping/__pycache__
+scrapping/.ipynb_checkpoints

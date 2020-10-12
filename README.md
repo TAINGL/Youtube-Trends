@@ -151,15 +151,15 @@ docker-compose down
 
 From Dockerfile
 ```cmd
-docker build -t <name_img>
+docker build -t <NameImage>
 docker images
-docker run <name_img or image_id>
-docker stop <name_img or image_id>
+docker run <NameImage or ImageID>
+docker stop <NameImage or ImageID>
 ```
 
 From Docker Hub: https://hub.docker.com/repository/docker/taing/youtube_app
 ```cmd
-docker pull taing/youtube_app:<last_tag>
+docker pull taing/youtube_app:<LastTag>
 docker images
 docker run -p 5000:5000 <ImageID>
 ```

@@ -13,6 +13,7 @@ sys.path.insert(0, '../mongodb/')
 sys.path.insert(0, 'nlp/')
 from secret.config import MongodbConfig
 from model_API import Prediction
+from model_noapi import Predictions
 import numpy as np
 import pandas as pd
 from mongodb.config import MongodbConfig
@@ -30,6 +31,7 @@ URI = MongodbConfig("atlas")
 client = pymongo.MongoClient(URI)
 db = client.get_database('youtube_trends')
 wc = Prediction("text")
+noapi = Predictions("link")
 
 # main index page route
 @app.route('/', methods=['GET','POST'])
@@ -190,9 +192,30 @@ def videoCommentsSentiment():
     return json.dumps(result, default=json_util.default)
 
 
-@app.route('/statistics', methods=['GET','POST'])
+@app.route('/statistics', methods=['GET'])
 def statistics():
     return render_template('statistics.html')
+
+@app.route('/comments-sentiments-noapi', methods=['GET'])
+def videoCommentsSentiment_noapi():
+    link = request.args.get('link')
+
+    sentiments = noapi.sentiment_analysis_comments(link)
+
+    title = ['POSITIVE','NEGATIVE']
+    sentiment = []
+    sentiment.append(sentiments[1])
+    sentiment.append(sentiments[2])
+
+    positive = sentiments[1] > sentiments[2]
+
+    result = {
+        'title': title,
+        'sentiment': sentiment,
+        'positive' : positive
+    }
+
+    return json.dumps(result, default=json_util.default)
 
 
 @app.route('/statistics-data', methods=['GET','POST'])

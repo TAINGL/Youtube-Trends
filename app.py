@@ -17,7 +17,6 @@ from model_API import Prediction
 from model_noapi import Predictions_noapi
 import numpy as np
 import pandas as pd
-from mongodb.config import MongodbConfig
 from nlp.video_summary import caption_text, splitting_text, summarizer_text
 
 #app initialization

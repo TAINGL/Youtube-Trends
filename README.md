@@ -147,7 +147,7 @@ Neo4j was built to efficiently store, handle, and query highly-connected data in
 
 **Importing CSV Data** : 
 
-<img width=100% src="https://github.com/TAINGL/Youtube-Trends/blob/feature/app/helpers/neo4j_manage.png"/>
+<img width=100% src="https://github.com/TAINGL/Youtube-Trends/blob/master/helpers/neo4j_manage.png"/>
 
 - Click on Manage
 - In the Manage panel, you should see the button for Open Folder in the upper panel. Right next to that button is a dropdown arrow button. If you click that, you will see a menu of options for different folders.
@@ -159,7 +159,7 @@ Neo4j was built to efficiently store, handle, and query highly-connected data in
 Use Cypher’s commands to create the nodes
 Cypher is Neo4j’s graph query language that allows users to store and retrieve data from the graph database.
 
-<img width=100% src="https://github.com/TAINGL/Youtube-Trends/blob/feature/app/helpers/neo4j-Browser.png"/>
+<img width=100% src="https://github.com/TAINGL/Youtube-Trends/blob/master/helpers/neo4j-Browser.png"/>
 
 To enter and run Cypher statements: Click on Open Neo4j Browser, type statements into input box at top, and execute with the play button on the right.
 
@@ -168,7 +168,7 @@ Example of Statement to create nodes from the data found in the youtuber_list_20
 LOAD CSV WITH HEADERS FROM 'file:///youtuber_list_20201006.csv' AS youtubelist
 MERGE (e:Channel {Channelid: youtubelist.Channelid, ChannelInfo: youtubelist.ChannelInfo, Category: youtubelist.Category, Subscribers: youtubelist.Subscribers})
 ```
-<img width=100%  src="https://github.com/TAINGL/Youtube-Trends/blob/feature/app/helpers/neo4j-nodes.png"/>
+<img width=100%  src="https://github.com/TAINGL/Youtube-Trends/blob/master/helpers/neo4j-nodes.png"/>
 
 Example of Statement to create relationship between nodes:
 ```python
@@ -192,7 +192,7 @@ MATCH (d:FeatureData { Channelid: f.FeaturedChannelsUrls })
 MERGE (e)-[r:KNOWS]->(f)-[h:HAVE]->(d)
 RETURN e.ChannelInfo, type(r), f.FeaturedChannelsUrls, type(h), d.Title
 ```
-<img width=100% src="https://github.com/TAINGL/Youtube-Trends/blob/feature/app/helpers/neo4j-relationship.png"/>
+<img width=100% src="https://github.com/TAINGL/Youtube-Trends/blob/master/helpers/neo4j-relationship.png"/>
 
 ## 5. Run Application
 ### 5.1 On Local 

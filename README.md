@@ -29,7 +29,10 @@ source <NameofEnvironment>\bin\activate
 <NameofEnvironment>\Scripts\activate
 (env) C:\Users\sandy\Desktop\testEnv>deactivate
 ```
-
+**Step 4: Now let's install some packages after activating the virtual env**
+```python
+pip install -r requirements.txt
+```
 
 ## 1. Collecting YouTube Data
 For this project, youtube api was used to get the required data that will be stored in a mongo database.  For the models, hugging face will be used, and a Flask application will be deployed to be able to access the recommendation system.

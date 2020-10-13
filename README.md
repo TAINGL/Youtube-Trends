@@ -5,6 +5,32 @@ The objective of this app is to help and guide you with a choice.  You will get 
 
 <img width=100%  src="https://github.com/TAINGL/Youtube-Trends/blob/master/helpers/application.png"/>
 
+## Set the virtual environment for your projet
+**Step 1: Installing the virtual environment**
+```python
+pip install virtualenv
+```
+**Step 2: Create a virtual environment**
+```python
+mkdir <NameFolder>
+cd <NameFolder>
+```
+then type the following command there it will create one folder with name env:
+```python
+virtualenv <NameofEnvironment>
+```
+**Step 4: activate the virtual environment**
+so that we can install the packages and will take care of it - <NameofEnvironment> is the folder which is created when we created a virtual environment inside it there are multiple directories but we are concerned with Scripts and inside that activate. This command will activate the virtual environment.
+
+```python
+# For OS, Linux
+source <NameofEnvironment>\bin\activate
+# For Windows
+<NameofEnvironment>\Scripts\activate
+(env) C:\Users\sandy\Desktop\testEnv>deactivate
+```
+
+
 ## 1. Collecting YouTube Data
 For this project, youtube api was used to get the required data that will be stored in a mongo database.  For the models, hugging face will be used, and a Flask application will be deployed to be able to access the recommendation system.
 

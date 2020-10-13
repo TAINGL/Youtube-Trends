@@ -3,7 +3,7 @@ If you are a marketing Professional and you want to do a collaboration with an i
 
 The objective of this app is to help and guide you with a choice.  You will get the possibility to review the statistics of each youtuber's channel and be able to recommend another as per the categories or featured channels of the latter.
 
-<img width=100%  src="https://github.com/TAINGL/Youtube-Trends/blob/feature/app/helpers/application.png"/>
+<img width=100%  src="https://github.com/TAINGL/Youtube-Trends/blob/master/helpers/application.png"/>
 
 ## 1. Collecting YouTube Data
 For this project, youtube api was used to get the required data that will be stored in a mongo database.  For the models, hugging face will be used, and a Flask application will be deployed to be able to access the recommendation system.

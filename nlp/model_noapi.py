@@ -12,7 +12,7 @@ import sys
 import youtube_noapi
 pd.options.mode.chained_assignment = None
 
-class Predictions_noapi:
+class Predictions_noapi: # pas hyper utile d'avoir une classe quand le seul attribut qui existe n'est pas modifier
     def __init__(self, link):
         self.link = link
 
@@ -29,16 +29,16 @@ class Predictions_noapi:
         Labelisation comments & count of goob and bad comments
         """
         classifier = pipeline('sentiment-analysis')
-        df, comment_lists = self.video_comments(link)
-        df["label"] = 0
+        df, comment_lists = self.video_comments(link)# ça fonctionne ça ? self.video_comments n'est pas défini avant
+        df["label"] = 0 ## fait ça en une ligne, quand même !
         for i in range(df.shape[0]):
             if classifier(comment_lists[i])[0]["label"] == 'POSITIVE':
                 df.label[i] = 'POSITIVE'
             else:
                 df.label[i] = 'NEGATIVE'
         print(df)
-        comments_list = df['label'].tolist()
-        count_good = sum(1 for i in comments_list if i == 'POSITIVE')
+        comments_list = df['label'].tolist() # =====> Fait une fonction qui prend en argument un label "POSITIVE" ou "NEGATIVE"
+        count_good = sum(1 for i in comments_list if i == 'POSITIVE') #Osh Dias ! un value_counts count est effiace !
         count_bad = sum(1 for i in comments_list if i  == 'NEGATIVE')
         print(count_good, count_bad)
         
@@ -64,7 +64,7 @@ class Predictions_noapi:
         And printing wordcloud associated with the good or bad comment
         """
         #df = df.apply(lambda x : text_preprocessing(x))
-        good_reviews = df[df.label == "POSITIVE"]
+        good_reviews = df[df.label == "POSITIVE"]# =====> Fait une fonction qui prend en argument un label "POSITIVE" ou "NEGATIVE"
         bad_reviews = df[df.label == "NEGATIVE"]
         #print(good_reviews)
         good_reviews_text = " ".join(good_reviews.comments.to_numpy().tolist())
@@ -73,7 +73,7 @@ class Predictions_noapi:
         bad_reviews_cloud = WordCloud(stopwords=STOPWORDS, background_color="white").generate(bad_reviews_text)
         #print(good_reviews_cloud, bad_reviews_cloud)
         
-        show_word_cloud(good_reviews_cloud, 'good comments')
+        show_word_cloud(good_reviews_cloud, 'good comments') ### ça fonctionne ça ? show_word_cloud n'existe pas (mais self.show_word_cloud oui)
         show_word_cloud(bad_reviews_cloud, 'bad comments') 
 
 #df, count_good, count_bad = sentiment_analysis('https://www.youtube.com/watch?v=Kkd9yWak9xw')
